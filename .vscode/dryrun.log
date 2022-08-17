@@ -1,0 +1,64 @@
+make.exe --dry-run --keep-going --print-directory
+make.exe: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3'
+( cd man && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/man'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/man'
+ 
+( cd include && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/include'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/include'
+ 
+( cd ncurses && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/ncurses'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/ncurses'
+ 
+( cd progs && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/progs'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/progs'
+ 
+( cd panel && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/panel'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/panel'
+ 
+( cd menu && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/menu'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/menu'
+ 
+( cd form && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/form'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/form'
+ 
+( cd test && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/test'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/test'
+ 
+( cd misc && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/misc'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/misc'
+ 
+( cd c++ && make.exe DESTDIR="" RPATH_LIST="/usr/ppc-amigaos/SDK/local/clib2/lib" all )
+ 
+make.exe[1]: Entering directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/c++'
+make.exe[1]: Nothing to be done for 'all'.
+make.exe[1]: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3/c++'
+ 
+make.exe: Leaving directory 'd:/Sviluppo/Amiga/libs/ncurses-6.3'
+ 
