@@ -40,14 +40,15 @@
 
 WANT_USE_WINDOW();
 
-#define MAX_THREADS	10
-#define MAX_DROP	5
+#define MAX_THREADS 10
+#define MAX_DROP 5
 
 struct DATA;
 
-typedef void (*DrawPart) (struct DATA *);
+typedef void (*DrawPart)(struct DATA *);
 
-typedef struct DATA {
+typedef struct DATA
+{
     int y, x;
 #ifdef USE_PTHREADS
     DrawPart func;
@@ -60,7 +61,8 @@ pthread_cond_t cond_next_drop;
 pthread_mutex_t mutex_next_drop;
 static int used_threads;
 
-typedef struct {
+typedef struct
+{
     pthread_t myself;
     long counter;
 } STATS;
@@ -87,55 +89,56 @@ static double
 ranf(void)
 {
     long r = (rand() & 077777);
-    return ((double) r / 32768.);
+    return ((double)r / 32768.);
 }
 
 static int
 random_x(void)
 {
-    return (int) (((double) (COLS - 4) * ranf()) + 2);
+    return (int)(((double)(COLS - 4) * ranf()) + 2);
 }
 
 static int
 random_y(void)
 {
-    return (int) (((double) (LINES - 4) * ranf()) + 2);
+    return (int)(((double)(LINES - 4) * ranf()) + 2);
 }
 
 static int
 next_j(int j)
 {
     if (j == 0)
-	j = MAX_DROP - 1;
+        j = MAX_DROP - 1;
     else
-	--j;
-    if (has_colors()) {
-	int z = (int) (3 * ranf());
-	(void) attrset(AttrArg(COLOR_PAIR(z), (z ? A_BOLD : A_NORMAL)));
+        --j;
+    if (has_colors())
+    {
+        int z = (int)(3 * ranf());
+        (void)attrset(AttrArg(COLOR_PAIR(z), (z ? A_BOLD : A_NORMAL)));
     }
     return j;
 }
 
 static void
-part1(DATA * drop)
+part1(DATA *drop)
 {
     MvAddCh(drop->y, drop->x, '.');
 }
 
 static void
-part2(DATA * drop)
+part2(DATA *drop)
 {
     MvAddCh(drop->y, drop->x, 'o');
 }
 
 static void
-part3(DATA * drop)
+part3(DATA *drop)
 {
     MvAddCh(drop->y, drop->x, 'O');
 }
 
 static void
-part4(DATA * drop)
+part4(DATA *drop)
 {
     MvAddCh(drop->y - 1, drop->x, '-');
     MvAddStr(drop->y, drop->x - 1, "|.|");
@@ -143,7 +146,7 @@ part4(DATA * drop)
 }
 
 static void
-part5(DATA * drop)
+part5(DATA *drop)
 {
     MvAddCh(drop->y - 2, drop->x, '-');
     MvAddStr(drop->y - 1, drop->x - 1, "/ \\");
@@ -153,7 +156,7 @@ part5(DATA * drop)
 }
 
 static void
-part6(DATA * drop)
+part6(DATA *drop)
 {
     MvAddCh(drop->y - 2, drop->x, ' ');
     MvAddStr(drop->y - 1, drop->x - 1, "   ");
@@ -175,9 +178,9 @@ napsome(void)
 static int
 really_draw(WINDOW *win, void *arg)
 {
-    DATA *data = (DATA *) arg;
+    DATA *data = (DATA *)arg;
 
-    (void) win;
+    (void)win;
     next_j(data->state);
     data->func(data);
     refresh();
@@ -185,11 +188,11 @@ really_draw(WINDOW *win, void *arg)
 }
 
 static void
-draw_part(void (*func) (DATA *), int state, DATA * data)
+draw_part(void (*func)(DATA *), int state, DATA *data)
 {
     data->func = func;
     data->state = state;
-    use_window(stdscr, really_draw, (void *) data);
+    use_window(stdscr, really_draw, (void *)data);
     napsome();
 }
 
@@ -227,33 +230,35 @@ draw_drop(void *arg)
     /*
      * Find myself in the list of threads so we can count the number of loops.
      */
-    for (mystats = 0; mystats < MAX_THREADS; ++mystats) {
+    for (mystats = 0; mystats < MAX_THREADS; ++mystats)
+    {
 #if defined(_NC_WINDOWS) && !defined(__WINPTHREADS_VERSION)
-	if (drop_threads[mystats].myself.p == pthread_self().p)
+        if (drop_threads[mystats].myself.p == pthread_self().p)
 #else
-	if (drop_threads[mystats].myself == pthread_self())
+        if (drop_threads[mystats].myself == pthread_self())
 #endif
-	    break;
+            break;
     }
 
-    do {
-	if (mystats < MAX_THREADS)
-	    drop_threads[mystats].counter++;
+    do
+    {
+        if (mystats < MAX_THREADS)
+            drop_threads[mystats].counter++;
 
-	/*
-	 * Make a copy of caller's data.  We're cheating for the cases after
-	 * the first loop since we still have a pointer into the main thread
-	 * to the data which it uses for setting up this thread (but it has
-	 * been modified to use different coordinates).
-	 */
-	mydata = *(DATA *) arg;
+        /*
+         * Make a copy of caller's data.  We're cheating for the cases after
+         * the first loop since we still have a pointer into the main thread
+         * to the data which it uses for setting up this thread (but it has
+         * been modified to use different coordinates).
+         */
+        mydata = *(DATA *)arg;
 
-	draw_part(part1, 0, &mydata);
-	draw_part(part2, 1, &mydata);
-	draw_part(part3, 2, &mydata);
-	draw_part(part4, 3, &mydata);
-	draw_part(part5, 4, &mydata);
-	draw_part(part6, 0, &mydata);
+        draw_part(part1, 0, &mydata);
+        draw_part(part2, 1, &mydata);
+        draw_part(part3, 2, &mydata);
+        draw_part(part4, 3, &mydata);
+        draw_part(part5, 4, &mydata);
+        draw_part(part6, 0, &mydata);
     } while (get_next_drop());
 
     return NULL;
@@ -268,24 +273,28 @@ draw_drop(void *arg)
  * waiting when we want a thread past that limit.
  */
 static int
-start_drop(DATA * data)
+start_drop(DATA *data)
 {
     int rc;
 
-    if (!used_threads) {
-	/* mutex and condition for signalling thread */
-	pthread_mutex_init(&mutex_next_drop, NULL);
-	pthread_cond_init(&cond_next_drop, NULL);
+    if (!used_threads)
+    {
+        /* mutex and condition for signalling thread */
+        pthread_mutex_init(&mutex_next_drop, NULL);
+        pthread_cond_init(&cond_next_drop, NULL);
     }
 
-    if (used_threads < MAX_THREADS) {
-	rc = pthread_create(&(drop_threads[used_threads].myself),
-			    NULL,
-			    draw_drop,
-			    data);
-	++used_threads;
-    } else {
-	rc = put_next_drop();
+    if (used_threads < MAX_THREADS)
+    {
+        rc = pthread_create(&(drop_threads[used_threads].myself),
+                            NULL,
+                            draw_drop,
+                            data);
+        ++used_threads;
+    }
+    else
+    {
+        rc = put_next_drop();
     }
     return rc;
 }
@@ -302,33 +311,32 @@ usage(void)
 {
     static const char *msg[] =
     {
-	"Usage: rain [options]"
-	,""
-	,"Options:"
+        "Usage: rain [options]",
+        "",
+        "Options:"
 #if HAVE_USE_DEFAULT_COLORS
-	," -d       invoke use_default_colors"
+        ,
+        " -d       invoke use_default_colors"
 #endif
     };
     size_t n;
 
     for (n = 0; n < SIZEOF(msg); n++)
-	fprintf(stderr, "%s\n", msg[n]);
+        fprintf(stderr, "%s\n", msg[n]);
 
     ExitProgram(EXIT_FAILURE);
 }
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     static const char *help[] =
-    {
-	"Commands:",
-	" q/Q        exit the program",
-	" s          do single-step",
-	" <space>    undo single-step",
-	"",
-	0
-    };
+        {
+            "Commands:",
+            " q/Q        exit the program",
+            " s          do single-step",
+            " <space>    undo single-step",
+            "",
+            0};
 
     bool done = FALSE;
     DATA drop;
@@ -341,108 +349,116 @@ main(int argc, char *argv[])
     bool d_option = FALSE;
 #endif
 
-    while ((ch = getopt(argc, argv, "d")) != -1) {
-	switch (ch) {
+    while ((ch = getopt(argc, argv, "d")) != -1)
+    {
+        switch (ch)
+        {
 #if HAVE_USE_DEFAULT_COLORS
-	case 'd':
-	    d_option = TRUE;
-	    break;
+        case 'd':
+            d_option = TRUE;
+            break;
 #endif
-	default:
-	    usage();
-	    /* NOTREACHED */
-	}
+        default:
+            usage();
+            /* NOTREACHED */
+        }
     }
     if (optind < argc)
-	usage();
+        usage();
 
     setlocale(LC_ALL, "");
 
     InitAndCatch(initscr(), onsig);
-    if (has_colors()) {
-	int bg = COLOR_BLACK;
-	start_color();
+    if (has_colors())
+    {
+        int bg = COLOR_BLACK;
+        start_color();
 #if HAVE_USE_DEFAULT_COLORS
-	if (d_option && (use_default_colors() == OK))
-	    bg = -1;
+        if (d_option && (use_default_colors() == OK))
+            bg = -1;
 #endif
-	init_pair(1, COLOR_BLUE, (short) bg);
-	init_pair(2, COLOR_CYAN, (short) bg);
+        init_pair(1, COLOR_BLUE, (short)bg);
+        init_pair(2, COLOR_CYAN, (short)bg);
     }
+
     nl();
     noecho();
     curs_set(0);
     timeout(0);
 
 #ifndef USE_PTHREADS
-    for (j = MAX_DROP; --j >= 0;) {
-	last[j].x = random_x();
-	last[j].y = random_y();
+    for (j = MAX_DROP; --j >= 0;)
+    {
+        last[j].x = random_x();
+        last[j].y = random_y();
     }
     j = 0;
 #endif
 
-    while (!done) {
-	drop.x = random_x();
-	drop.y = random_y();
+    while (!done)
+    {
+        drop.x = random_x();
+        drop.y = random_y();
 
 #ifdef USE_PTHREADS
-	if (start_drop(&drop) != 0) {
-	    beep();
-	}
+        if (start_drop(&drop) != 0)
+        {
+            beep();
+        }
 #else
-	/*
-	 * The non-threaded code draws parts of each drop on each loop.
-	 */
-	part1(&drop);
+        /*
+         * The non-threaded code draws parts of each drop on each loop.
+         */
+        part1(&drop);
 
-	part2(&last[j]);
+        part2(&last[j]);
 
-	j = next_j(j);
-	part3(&last[j]);
+        j = next_j(j);
+        part3(&last[j]);
 
-	j = next_j(j);
-	part4(&last[j]);
+        j = next_j(j);
+        part4(&last[j]);
 
-	j = next_j(j);
-	part5(&last[j]);
+        j = next_j(j);
+        part5(&last[j]);
 
-	j = next_j(j);
-	part6(&last[j]);
+        j = next_j(j);
+        part6(&last[j]);
 
-	last[j] = drop;
+        last[j] = drop;
 #endif
 
-	switch (get_input()) {
-	case ('q'):
-	case ('Q'):
-	    done = TRUE;
-	    break;
-	case 's':
-	    nodelay(stdscr, FALSE);
-	    break;
-	case ' ':
-	    nodelay(stdscr, TRUE);
-	    break;
+        switch (get_input())
+        {
+        case ('q'):
+        case ('Q'):
+            done = TRUE;
+            break;
+        case 's':
+            nodelay(stdscr, FALSE);
+            break;
+        case ' ':
+            nodelay(stdscr, TRUE);
+            break;
 #ifdef KEY_RESIZE
-	case (KEY_RESIZE):
-	    break;
+        case (KEY_RESIZE):
+            break;
 #endif
-	case HELP_KEY_1:
-	    popup_msg(stdscr, help);
-	    break;
-	case ERR:
-	    break;
-	default:
-	    beep();
-	}
-	napms(50);
+        case HELP_KEY_1:
+            popup_msg(stdscr, help);
+            break;
+        case ERR:
+            break;
+        default:
+            beep();
+        }
+        napms(50);
     }
     stop_curses();
 #ifdef USE_PTHREADS
     printf("Counts per thread:\n");
     for (j = 0; j < MAX_THREADS; ++j)
-	printf("  %d:%ld\n", j, drop_threads[j].counter);
+        printf("  %d:%ld\n", j, drop_threads[j].counter);
 #endif
     ExitProgram(EXIT_SUCCESS);
 }

@@ -85,6 +85,9 @@ _nc_initscr(NCURSES_SP_DCL0)
 		buf = term->Nttyb;
 #if defined(TERMIOS)
 		buf.c_lflag &= (unsigned)~(ECHO | ECHONL);
+#ifdef __amigaos4__
+		buf.c_lflag |= NCURSES;
+#endif		
 		buf.c_iflag &= (unsigned)~(ICRNL | INLCR | IGNCR);
 		buf.c_oflag &= (unsigned)~(ONLCR);
 #elif HAVE_SGTTY_H

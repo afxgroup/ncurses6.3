@@ -404,6 +404,7 @@ check_pending(NCURSES_SP_DCL0)
 	fd_set fdset;
 	struct timeval ktimeout;
 
+
 	ktimeout.tv_sec =
 	    ktimeout.tv_usec = 0;
 

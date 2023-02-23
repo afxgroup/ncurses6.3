@@ -53,14 +53,14 @@
 MODULE_ID("$Id: lib_raw.c,v 1.26 2020/11/21 22:07:48 tom Exp $")
 
 #if HAVE_SYS_TERMIO_H
-#include <sys/termio.h>		/* needed for ISC */
+#include <sys/termio.h> /* needed for ISC */
 #endif
 
 #ifdef __EMX__
 #include <io.h>
 #define _nc_setmode(mode) setmode(SP_PARM->_ifd, mode)
 #else
-#define _nc_setmode(mode)	/* nothing */
+#define _nc_setmode(mode) /* nothing */
 #endif
 
 #if USE_KLIBC_KBD
@@ -68,115 +68,134 @@ MODULE_ID("$Id: lib_raw.c,v 1.26 2020/11/21 22:07:48 tom Exp $")
 #include <os2.h>
 #endif
 
-#define COOKED_INPUT	(IXON|BRKINT|PARMRK)
+#define COOKED_INPUT (IXON | BRKINT | PARMRK)
 
 #ifdef TRACE
-#define BEFORE(N)	if (USE_TRACEF(TRACE_BITS)) _nc_locked_tracef("%s before bits: %s", N, _nc_tracebits())
-#define AFTER(N)	if (USE_TRACEF(TRACE_BITS)) _nc_locked_tracef("%s after bits: %s", N, _nc_tracebits())
+#define BEFORE(N)               \
+	if (USE_TRACEF(TRACE_BITS)) \
+	_nc_locked_tracef("%s before bits: %s", N, _nc_tracebits())
+#define AFTER(N)                \
+	if (USE_TRACEF(TRACE_BITS)) \
+	_nc_locked_tracef("%s after bits: %s", N, _nc_tracebits())
 #else
 #define BEFORE(s)
 #define AFTER(s)
 #endif /* TRACE */
 
 NCURSES_EXPORT(int)
-NCURSES_SP_NAME(raw) (NCURSES_SP_DCL0)
+NCURSES_SP_NAME(raw)
+(NCURSES_SP_DCL0)
 {
-    int result = ERR;
-    TERMINAL *termp;
+	int result = ERR;
+	TERMINAL *termp;
 
-    T((T_CALLED("raw(%p)"), (void *) SP_PARM));
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
+	T((T_CALLED("raw(%p)"), (void *)SP_PARM));
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
 
-	BEFORE("raw");
-	_nc_setmode(O_BINARY);
+		BEFORE("raw");
+		_nc_setmode(O_BINARY);
 
-	buf = termp->Nttyb;
+		buf = termp->Nttyb;
 #ifdef TERMIOS
-	buf.c_lflag &= (unsigned) ~(ICANON | ISIG | IEXTEN);
-	buf.c_iflag &= (unsigned) ~(COOKED_INPUT);
-	buf.c_cc[VMIN] = 1;
-	buf.c_cc[VTIME] = 0;
+		buf.c_lflag &= (unsigned)~(ICANON | ISIG | IEXTEN);
+#ifdef __amigaos4__
+		buf.c_lflag |= NCURSES;
+#endif		
+		buf.c_iflag &= (unsigned)~(COOKED_INPUT);
+		buf.c_cc[VMIN] = 1;
+		buf.c_cc[VTIME] = 0;
 #elif defined(EXP_WIN32_DRIVER)
-	buf.dwFlagIn &= (unsigned long) ~CONMODE_NORAW;
+		buf.dwFlagIn &= (unsigned long)~CONMODE_NORAW;
 #else
-	buf.sg_flags |= RAW;
+		buf.sg_flags |= RAW;
 #endif
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
-	if (result == OK) {
+
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
+		if (result == OK)
+		{
 #if USE_KLIBC_KBD
-	    KBDINFO kbdinfo;
+			KBDINFO kbdinfo;
 
-	    kbdinfo.cb = sizeof(kbdinfo);
-	    KbdGetStatus(&kbdinfo, 0);
+			kbdinfo.cb = sizeof(kbdinfo);
+			KbdGetStatus(&kbdinfo, 0);
 
-	    kbdinfo.cb = sizeof(kbdinfo);
-	    kbdinfo.fsMask &= ~KEYBOARD_ASCII_MODE;
-	    kbdinfo.fsMask |= KEYBOARD_BINARY_MODE;
-	    KbdSetStatus(&kbdinfo, 0);
+			kbdinfo.cb = sizeof(kbdinfo);
+			kbdinfo.fsMask &= ~KEYBOARD_ASCII_MODE;
+			kbdinfo.fsMask |= KEYBOARD_BINARY_MODE;
+			KbdSetStatus(&kbdinfo, 0);
 #endif
-	    if (SP_PARM) {
-		SP_PARM->_raw = TRUE;
-		SP_PARM->_cbreak = 1;
-	    }
-	    termp->Nttyb = buf;
+			if (SP_PARM)
+			{
+				SP_PARM->_raw = TRUE;
+				SP_PARM->_cbreak = 1;
+			}
+			termp->Nttyb = buf;
+		}
+		AFTER("raw");
 	}
-	AFTER("raw");
-    }
-    returnCode(result);
+	returnCode(result);
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(int)
 raw(void)
 {
-    return NCURSES_SP_NAME(raw) (CURRENT_SCREEN);
+	return NCURSES_SP_NAME(raw)(CURRENT_SCREEN);
 }
 #endif
 
 NCURSES_EXPORT(int)
-NCURSES_SP_NAME(cbreak) (NCURSES_SP_DCL0)
+NCURSES_SP_NAME(cbreak)
+(NCURSES_SP_DCL0)
 {
-    int result = ERR;
-    TERMINAL *termp;
+	int result = ERR;
+	TERMINAL *termp;
 
-    T((T_CALLED("cbreak(%p)"), (void *) SP_PARM));
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
+	T((T_CALLED("cbreak(%p)"), (void *)SP_PARM));
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
 
-	BEFORE("cbreak");
-	_nc_setmode(O_BINARY);
+		BEFORE("cbreak");
+		_nc_setmode(O_BINARY);
 
-	buf = termp->Nttyb;
+		buf = termp->Nttyb;
 #ifdef TERMIOS
-	buf.c_lflag &= (unsigned) ~ICANON;
-	buf.c_iflag &= (unsigned) ~ICRNL;
-	buf.c_lflag |= ISIG;
-	buf.c_cc[VMIN] = 1;
-	buf.c_cc[VTIME] = 0;
+		buf.c_lflag &= (unsigned)~ICANON;
+		buf.c_iflag &= (unsigned)~ICRNL;
+		buf.c_lflag |= ISIG;
+#ifdef __amigaos4__
+		buf.c_lflag |= NCURSES;
+#endif		
+		buf.c_cc[VMIN] = 1;
+		buf.c_cc[VTIME] = 0;
 #elif defined(EXP_WIN32_DRIVER)
-	buf.dwFlagIn |= CONMODE_NORAW;
-	buf.dwFlagIn &= (unsigned long) ~CONMODE_NOCBREAK;
+		buf.dwFlagIn |= CONMODE_NORAW;
+		buf.dwFlagIn &= (unsigned long)~CONMODE_NOCBREAK;
 #else
-	buf.sg_flags |= CBREAK;
+		buf.sg_flags |= CBREAK;
 #endif
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
-	if (result == OK) {
-	    if (SP_PARM) {
-		SP_PARM->_cbreak = 1;
-	    }
-	    termp->Nttyb = buf;
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
+		if (result == OK)
+		{
+			if (SP_PARM)
+			{
+				SP_PARM->_cbreak = 1;
+			}
+			termp->Nttyb = buf;
+		}
+		AFTER("cbreak");
 	}
-	AFTER("cbreak");
-    }
-    returnCode(result);
+	returnCode(result);
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(int)
 cbreak(void)
 {
-    return NCURSES_SP_NAME(cbreak) (CURRENT_SCREEN);
+	return NCURSES_SP_NAME(cbreak)(CURRENT_SCREEN);
 }
 #endif
 
@@ -185,176 +204,196 @@ cbreak(void)
  * this implementation may be wrong.  See the comment under intrflush().
  */
 NCURSES_EXPORT(void)
-NCURSES_SP_NAME(qiflush) (NCURSES_SP_DCL0)
+NCURSES_SP_NAME(qiflush)
+(NCURSES_SP_DCL0)
 {
-    TERMINAL *termp;
+	TERMINAL *termp;
 
-    T((T_CALLED("qiflush(%p)"), (void *) SP_PARM));
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
-	int result;
+	T((T_CALLED("qiflush(%p)"), (void *)SP_PARM));
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
+		int result;
 
-	BEFORE("qiflush");
-	buf = termp->Nttyb;
+		BEFORE("qiflush");
+		buf = termp->Nttyb;
 #ifdef TERMIOS
 #ifndef NEWLIB
-	buf.c_lflag &= (unsigned) ~(NOFLSH);
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
+		buf.c_lflag &= (unsigned)~(NOFLSH);
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
 #else
-	result = ERR;
+		result = ERR;
 #endif
 #else
-	result = ERR;
-	/* FIXME */
+		result = ERR;
+		/* FIXME */
 #endif
-	if (result == OK)
-	    termp->Nttyb = buf;
-	AFTER("qiflush");
-    }
-    returnVoid;
+		if (result == OK)
+			termp->Nttyb = buf;
+		AFTER("qiflush");
+	}
+	returnVoid;
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(void)
 qiflush(void)
 {
-    NCURSES_SP_NAME(qiflush) (CURRENT_SCREEN);
+	NCURSES_SP_NAME(qiflush)
+	(CURRENT_SCREEN);
 }
 #endif
 
 NCURSES_EXPORT(int)
-NCURSES_SP_NAME(noraw) (NCURSES_SP_DCL0)
+NCURSES_SP_NAME(noraw)
+(NCURSES_SP_DCL0)
 {
-    int result = ERR;
-    TERMINAL *termp;
+	int result = ERR;
+	TERMINAL *termp;
 
-    T((T_CALLED("noraw(%p)"), (void *) SP_PARM));
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
+	T((T_CALLED("noraw(%p)"), (void *)SP_PARM));
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
 
-	BEFORE("noraw");
-	_nc_setmode(O_TEXT);
+		BEFORE("noraw");
+		_nc_setmode(O_TEXT);
 
-	buf = termp->Nttyb;
+		buf = termp->Nttyb;
 #ifdef TERMIOS
-	buf.c_lflag |= ISIG | ICANON |
-	    (termp->Ottyb.c_lflag & IEXTEN);
-	buf.c_iflag |= COOKED_INPUT;
+		buf.c_lflag |= ISIG | ICANON |
+					   (termp->Ottyb.c_lflag & IEXTEN);
+#ifdef __amigaos4__
+		buf.c_lflag |= NCURSES;
+#endif					   
+		buf.c_iflag |= COOKED_INPUT;
 #elif defined(EXP_WIN32_DRIVER)
-	buf.dwFlagIn |= CONMODE_NORAW;
+		buf.dwFlagIn |= CONMODE_NORAW;
 #else
-	buf.sg_flags &= ~(RAW | CBREAK);
+		buf.sg_flags &= ~(RAW | CBREAK);
 #endif
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
-	if (result == OK) {
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
+		if (result == OK)
+		{
 #if USE_KLIBC_KBD
-	    KBDINFO kbdinfo;
+			KBDINFO kbdinfo;
 
-	    kbdinfo.cb = sizeof(kbdinfo);
-	    KbdGetStatus(&kbdinfo, 0);
+			kbdinfo.cb = sizeof(kbdinfo);
+			KbdGetStatus(&kbdinfo, 0);
 
-	    kbdinfo.cb = sizeof(kbdinfo);
-	    kbdinfo.fsMask &= ~KEYBOARD_BINARY_MODE;
-	    kbdinfo.fsMask |= KEYBOARD_ASCII_MODE;
-	    KbdSetStatus(&kbdinfo, 0);
+			kbdinfo.cb = sizeof(kbdinfo);
+			kbdinfo.fsMask &= ~KEYBOARD_BINARY_MODE;
+			kbdinfo.fsMask |= KEYBOARD_ASCII_MODE;
+			KbdSetStatus(&kbdinfo, 0);
 #endif
-	    if (SP_PARM) {
-		SP_PARM->_raw = FALSE;
-		SP_PARM->_cbreak = 0;
-	    }
-	    termp->Nttyb = buf;
+			if (SP_PARM)
+			{
+				SP_PARM->_raw = FALSE;
+				SP_PARM->_cbreak = 0;
+			}
+			termp->Nttyb = buf;
+		}
+		AFTER("noraw");
 	}
-	AFTER("noraw");
-    }
-    returnCode(result);
+	returnCode(result);
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(int)
 noraw(void)
 {
-    return NCURSES_SP_NAME(noraw) (CURRENT_SCREEN);
+	return NCURSES_SP_NAME(noraw)(CURRENT_SCREEN);
 }
 #endif
 
 NCURSES_EXPORT(int)
-NCURSES_SP_NAME(nocbreak) (NCURSES_SP_DCL0)
+NCURSES_SP_NAME(nocbreak)
+(NCURSES_SP_DCL0)
 {
-    int result = ERR;
-    TERMINAL *termp;
+	int result = ERR;
+	TERMINAL *termp;
 
-    T((T_CALLED("nocbreak(%p)"), (void *) SP_PARM));
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
+	T((T_CALLED("nocbreak(%p)"), (void *)SP_PARM));
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
 
-	BEFORE("nocbreak");
-	_nc_setmode(O_TEXT);
+		BEFORE("nocbreak");
+		_nc_setmode(O_TEXT);
 
-	buf = termp->Nttyb;
+		buf = termp->Nttyb;
 #ifdef TERMIOS
-	buf.c_lflag |= ICANON;
-	buf.c_iflag |= ICRNL;
+		buf.c_lflag |= ICANON;
+		buf.c_iflag |= ICRNL;
+#ifdef __amigaos4__
+		buf.c_lflag |= NCURSES;
+#endif		
 #elif defined(EXP_WIN32_DRIVER)
-	buf.dwFlagIn |= (CONMODE_NOCBREAK | CONMODE_NORAW);
+		buf.dwFlagIn |= (CONMODE_NOCBREAK | CONMODE_NORAW);
 #else
-	buf.sg_flags &= ~CBREAK;
+		buf.sg_flags &= ~CBREAK;
 #endif
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
-	if (result == OK) {
-	    if (SP_PARM) {
-		SP_PARM->_cbreak = 0;
-	    }
-	    termp->Nttyb = buf;
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
+		if (result == OK)
+		{
+			if (SP_PARM)
+			{
+				SP_PARM->_cbreak = 0;
+			}
+			termp->Nttyb = buf;
+		}
+		AFTER("nocbreak");
 	}
-	AFTER("nocbreak");
-    }
-    returnCode(result);
+	returnCode(result);
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(int)
 nocbreak(void)
 {
-    return NCURSES_SP_NAME(nocbreak) (CURRENT_SCREEN);
+	return NCURSES_SP_NAME(nocbreak)(CURRENT_SCREEN);
 }
 #endif
 
 NCURSES_EXPORT(void)
-NCURSES_SP_NAME(noqiflush) (NCURSES_SP_DCL0)
+NCURSES_SP_NAME(noqiflush)
+(NCURSES_SP_DCL0)
 {
-    TERMINAL *termp;
+	TERMINAL *termp;
 
-    T((T_CALLED("noqiflush(%p)"), (void *) SP_PARM));
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
-	int result;
+	T((T_CALLED("noqiflush(%p)"), (void *)SP_PARM));
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
+		int result;
 
-	BEFORE("noqiflush");
-	buf = termp->Nttyb;
+		BEFORE("noqiflush");
+		buf = termp->Nttyb;
 #ifdef TERMIOS
 #ifndef NEWLIB
-	buf.c_lflag |= NOFLSH;
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
+		buf.c_lflag |= NOFLSH;
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
 #else
-	/* FIXME */
-	result = ERR;
-#endif	
-#else
-	/* FIXME */
-	result = ERR;
+		/* FIXME */
+		result = ERR;
 #endif
-	if (result == OK)
-	    termp->Nttyb = buf;
-	AFTER("noqiflush");
-    }
-    returnVoid;
+#else
+		/* FIXME */
+		result = ERR;
+#endif
+		if (result == OK)
+			termp->Nttyb = buf;
+		AFTER("noqiflush");
+	}
+	returnVoid;
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(void)
 noqiflush(void)
 {
-    NCURSES_SP_NAME(noqiflush) (CURRENT_SCREEN);
+	NCURSES_SP_NAME(noqiflush)
+	(CURRENT_SCREEN);
 }
 #endif
 
@@ -366,43 +405,46 @@ noqiflush(void)
  * curs_inopts(3x) is too exact to be coincidence.
  */
 NCURSES_EXPORT(int)
-NCURSES_SP_NAME(intrflush) (NCURSES_SP_DCLx WINDOW *win GCC_UNUSED, bool flag)
+NCURSES_SP_NAME(intrflush)
+(NCURSES_SP_DCLx WINDOW *win GCC_UNUSED, bool flag)
 {
-    int result = ERR;
-    TERMINAL *termp;
+	int result = ERR;
+	TERMINAL *termp;
 
-    T((T_CALLED("intrflush(%p,%d)"), (void *) SP_PARM, flag));
-    if (SP_PARM == 0)
-	returnCode(ERR);
+	T((T_CALLED("intrflush(%p,%d)"), (void *)SP_PARM, flag));
+	if (SP_PARM == 0)
+		returnCode(ERR);
 
-    if ((termp = TerminalOf(SP_PARM)) != 0) {
-	TTY buf;
+	if ((termp = TerminalOf(SP_PARM)) != 0)
+	{
+		TTY buf;
 
-	BEFORE("intrflush");
-	buf = termp->Nttyb;
+		BEFORE("intrflush");
+		buf = termp->Nttyb;
 #ifdef TERMIOS
 #ifndef NEWLIB
-	if (flag)
-	    buf.c_lflag &= (unsigned) ~(NOFLSH);
-	else
-	    buf.c_lflag |= (NOFLSH);
-	result = NCURSES_SP_NAME(_nc_set_tty_mode) (NCURSES_SP_ARGx &buf);
-#endif	
-#else
-	/* FIXME */
+		if (flag)
+			buf.c_lflag &= (unsigned)~(NOFLSH);
+		else
+			buf.c_lflag |= (NOFLSH);
+		result = NCURSES_SP_NAME(_nc_set_tty_mode)(NCURSES_SP_ARGx & buf);
 #endif
-	if (result == OK) {
-	    termp->Nttyb = buf;
+#else
+		/* FIXME */
+#endif
+		if (result == OK)
+		{
+			termp->Nttyb = buf;
+		}
+		AFTER("intrflush");
 	}
-	AFTER("intrflush");
-    }
-    returnCode(result);
+	returnCode(result);
 }
 
 #if NCURSES_SP_FUNCS
 NCURSES_EXPORT(int)
 intrflush(WINDOW *win GCC_UNUSED, bool flag)
 {
-    return NCURSES_SP_NAME(intrflush) (CURRENT_SCREEN, win, flag);
+	return NCURSES_SP_NAME(intrflush)(CURRENT_SCREEN, win, flag);
 }
 #endif

@@ -138,16 +138,18 @@ static GCC_NORETURN void done(int sig);
 static void
 set_color(WINDOW *win, chtype color)
 {
-    if (has_colors()) {
-	int n = (int) (color + 1);
-	if (my_pairs == 0)
-	    my_pairs = typeCalloc(bool, (size_t) (COLORS + 1));
-	if (!my_pairs[n]) {
-	    init_pair((short) n, (short) color, (short) my_bg);
-	    my_pairs[n] = TRUE;
-	}
-	wattroff(win, A_COLOR);
-	wattron(win, COLOR_PAIR(n));
+    if (has_colors())
+    {
+        int n = (int)(color + 1);
+        if (my_pairs == 0)
+            my_pairs = typeCalloc(bool, (size_t)(COLORS + 1));
+        if (!my_pairs[n])
+        {
+            init_pair((short)n, (short)color, (short)my_bg);
+            my_pairs[n] = TRUE;
+        }
+        wattroff(win, A_COLOR);
+        wattron(win, COLOR_PAIR(n));
     }
 }
 
@@ -155,16 +157,17 @@ static void
 unset_color(WINDOW *win)
 {
     if (has_colors())
-	(void) wattrset(win, COLOR_PAIR(0));
+        (void)wattrset(win, COLOR_PAIR(0));
 }
 
 static void
 look_out(int msecs)
 {
     napms(msecs);
-    if (getch() != ERR) {
-	beep();
-	done(0);
+    if (getch() != ERR)
+    {
+        beep();
+        done(0);
     }
 }
 
@@ -173,23 +176,26 @@ boxit(void)
 {
     int x = 0;
 
-    while (x < 20) {
-	MvAddCh(x, 7, '|');
-	++x;
+    while (x < 20)
+    {
+        MvAddCh(x, 7, '|');
+        ++x;
     }
 
     x = 8;
 
-    while (x < 80) {
-	MvAddCh(19, x, '_');
-	++x;
+    while (x < 80)
+    {
+        MvAddCh(19, x, '_');
+        ++x;
     }
 
     x = 0;
 
-    while (x < 80) {
-	MvAddCh(22, x, '_');
-	++x;
+    while (x < 80)
+    {
+        MvAddCh(22, x, '_');
+        ++x;
     }
 
     return (0);
@@ -237,36 +243,36 @@ static int
 tree(void)
 {
     set_color(treescrn, COLOR_GREEN);
-    MvWAddCh(treescrn, 1, 11, (chtype) '/');
-    MvWAddCh(treescrn, 2, 11, (chtype) '/');
-    MvWAddCh(treescrn, 3, 10, (chtype) '/');
-    MvWAddCh(treescrn, 4, 9, (chtype) '/');
-    MvWAddCh(treescrn, 5, 9, (chtype) '/');
-    MvWAddCh(treescrn, 6, 8, (chtype) '/');
-    MvWAddCh(treescrn, 7, 7, (chtype) '/');
-    MvWAddCh(treescrn, 8, 6, (chtype) '/');
-    MvWAddCh(treescrn, 9, 6, (chtype) '/');
-    MvWAddCh(treescrn, 10, 5, (chtype) '/');
-    MvWAddCh(treescrn, 11, 3, (chtype) '/');
-    MvWAddCh(treescrn, 12, 2, (chtype) '/');
+    MvWAddCh(treescrn, 1, 11, (chtype)'/');
+    MvWAddCh(treescrn, 2, 11, (chtype)'/');
+    MvWAddCh(treescrn, 3, 10, (chtype)'/');
+    MvWAddCh(treescrn, 4, 9, (chtype)'/');
+    MvWAddCh(treescrn, 5, 9, (chtype)'/');
+    MvWAddCh(treescrn, 6, 8, (chtype)'/');
+    MvWAddCh(treescrn, 7, 7, (chtype)'/');
+    MvWAddCh(treescrn, 8, 6, (chtype)'/');
+    MvWAddCh(treescrn, 9, 6, (chtype)'/');
+    MvWAddCh(treescrn, 10, 5, (chtype)'/');
+    MvWAddCh(treescrn, 11, 3, (chtype)'/');
+    MvWAddCh(treescrn, 12, 2, (chtype)'/');
 
-    MvWAddCh(treescrn, 1, 13, (chtype) '\\');
-    MvWAddCh(treescrn, 2, 13, (chtype) '\\');
-    MvWAddCh(treescrn, 3, 14, (chtype) '\\');
-    MvWAddCh(treescrn, 4, 15, (chtype) '\\');
-    MvWAddCh(treescrn, 5, 15, (chtype) '\\');
-    MvWAddCh(treescrn, 6, 16, (chtype) '\\');
-    MvWAddCh(treescrn, 7, 17, (chtype) '\\');
-    MvWAddCh(treescrn, 8, 18, (chtype) '\\');
-    MvWAddCh(treescrn, 9, 18, (chtype) '\\');
-    MvWAddCh(treescrn, 10, 19, (chtype) '\\');
-    MvWAddCh(treescrn, 11, 21, (chtype) '\\');
-    MvWAddCh(treescrn, 12, 22, (chtype) '\\');
+    MvWAddCh(treescrn, 1, 13, (chtype)'\\');
+    MvWAddCh(treescrn, 2, 13, (chtype)'\\');
+    MvWAddCh(treescrn, 3, 14, (chtype)'\\');
+    MvWAddCh(treescrn, 4, 15, (chtype)'\\');
+    MvWAddCh(treescrn, 5, 15, (chtype)'\\');
+    MvWAddCh(treescrn, 6, 16, (chtype)'\\');
+    MvWAddCh(treescrn, 7, 17, (chtype)'\\');
+    MvWAddCh(treescrn, 8, 18, (chtype)'\\');
+    MvWAddCh(treescrn, 9, 18, (chtype)'\\');
+    MvWAddCh(treescrn, 10, 19, (chtype)'\\');
+    MvWAddCh(treescrn, 11, 21, (chtype)'\\');
+    MvWAddCh(treescrn, 12, 22, (chtype)'\\');
 
-    MvWAddCh(treescrn, 4, 10, (chtype) '_');
-    MvWAddCh(treescrn, 4, 14, (chtype) '_');
-    MvWAddCh(treescrn, 8, 7, (chtype) '_');
-    MvWAddCh(treescrn, 8, 17, (chtype) '_');
+    MvWAddCh(treescrn, 4, 10, (chtype)'_');
+    MvWAddCh(treescrn, 4, 14, (chtype)'_');
+    MvWAddCh(treescrn, 8, 7, (chtype)'_');
+    MvWAddCh(treescrn, 8, 17, (chtype)'_');
 
     MvWAddStr(treescrn, 13, 0, "//////////// \\\\\\\\\\\\\\\\\\\\\\\\");
 
@@ -286,22 +292,22 @@ balls(void)
     overlay(treescrn, treescrn2);
 
     set_color(treescrn2, COLOR_BLUE);
-    MvWAddCh(treescrn2, 3, 9, (chtype) '@');
-    MvWAddCh(treescrn2, 3, 15, (chtype) '@');
-    MvWAddCh(treescrn2, 4, 8, (chtype) '@');
-    MvWAddCh(treescrn2, 4, 16, (chtype) '@');
-    MvWAddCh(treescrn2, 5, 7, (chtype) '@');
-    MvWAddCh(treescrn2, 5, 17, (chtype) '@');
-    MvWAddCh(treescrn2, 7, 6, (chtype) '@');
-    MvWAddCh(treescrn2, 7, 18, (chtype) '@');
-    MvWAddCh(treescrn2, 8, 5, (chtype) '@');
-    MvWAddCh(treescrn2, 8, 19, (chtype) '@');
-    MvWAddCh(treescrn2, 10, 4, (chtype) '@');
-    MvWAddCh(treescrn2, 10, 20, (chtype) '@');
-    MvWAddCh(treescrn2, 11, 2, (chtype) '@');
-    MvWAddCh(treescrn2, 11, 22, (chtype) '@');
-    MvWAddCh(treescrn2, 12, 1, (chtype) '@');
-    MvWAddCh(treescrn2, 12, 23, (chtype) '@');
+    MvWAddCh(treescrn2, 3, 9, (chtype)'@');
+    MvWAddCh(treescrn2, 3, 15, (chtype)'@');
+    MvWAddCh(treescrn2, 4, 8, (chtype)'@');
+    MvWAddCh(treescrn2, 4, 16, (chtype)'@');
+    MvWAddCh(treescrn2, 5, 7, (chtype)'@');
+    MvWAddCh(treescrn2, 5, 17, (chtype)'@');
+    MvWAddCh(treescrn2, 7, 6, (chtype)'@');
+    MvWAddCh(treescrn2, 7, 18, (chtype)'@');
+    MvWAddCh(treescrn2, 8, 5, (chtype)'@');
+    MvWAddCh(treescrn2, 8, 19, (chtype)'@');
+    MvWAddCh(treescrn2, 10, 4, (chtype)'@');
+    MvWAddCh(treescrn2, 10, 20, (chtype)'@');
+    MvWAddCh(treescrn2, 11, 2, (chtype)'@');
+    MvWAddCh(treescrn2, 11, 22, (chtype)'@');
+    MvWAddCh(treescrn2, 12, 1, (chtype)'@');
+    MvWAddCh(treescrn2, 12, 23, (chtype)'@');
 
     unset_color(treescrn2);
     wrefresh(treescrn2);
@@ -312,11 +318,11 @@ balls(void)
 static int
 star(void)
 {
-    (void) wattrset(treescrn2, A_BOLD | A_BLINK);
+    (void)wattrset(treescrn2, A_BOLD | A_BLINK);
     set_color(treescrn2, COLOR_YELLOW);
 
-    MvWAddCh(treescrn2, 0, 12, (chtype) '*');
-    (void) wstandend(treescrn2);
+    MvWAddCh(treescrn2, 0, 12, (chtype)'*');
+    (void)wstandend(treescrn2);
 
     unset_color(treescrn2);
     wrefresh(treescrn2);
@@ -327,12 +333,12 @@ star(void)
 static int
 strng1(void)
 {
-    (void) wattrset(treescrn2, A_BOLD | A_BLINK);
+    (void)wattrset(treescrn2, A_BOLD | A_BLINK);
     set_color(treescrn2, COLOR_WHITE);
 
-    MvWAddCh(treescrn2, 3, 13, (chtype) '\'');
-    MvWAddCh(treescrn2, 3, 12, (chtype) ':');
-    MvWAddCh(treescrn2, 3, 11, (chtype) '.');
+    MvWAddCh(treescrn2, 3, 13, (chtype)'\'');
+    MvWAddCh(treescrn2, 3, 12, (chtype)':');
+    MvWAddCh(treescrn2, 3, 11, (chtype)'.');
 
     wattroff(treescrn2, A_BOLD | A_BLINK);
     unset_color(treescrn2);
@@ -345,15 +351,15 @@ strng1(void)
 static int
 strng2(void)
 {
-    (void) wattrset(treescrn2, A_BOLD | A_BLINK);
+    (void)wattrset(treescrn2, A_BOLD | A_BLINK);
     set_color(treescrn2, COLOR_WHITE);
 
-    MvWAddCh(treescrn2, 5, 14, (chtype) '\'');
-    MvWAddCh(treescrn2, 5, 13, (chtype) ':');
-    MvWAddCh(treescrn2, 5, 12, (chtype) '.');
-    MvWAddCh(treescrn2, 5, 11, (chtype) ',');
-    MvWAddCh(treescrn2, 6, 10, (chtype) '\'');
-    MvWAddCh(treescrn2, 6, 9, (chtype) ':');
+    MvWAddCh(treescrn2, 5, 14, (chtype)'\'');
+    MvWAddCh(treescrn2, 5, 13, (chtype)':');
+    MvWAddCh(treescrn2, 5, 12, (chtype)'.');
+    MvWAddCh(treescrn2, 5, 11, (chtype)',');
+    MvWAddCh(treescrn2, 6, 10, (chtype)'\'');
+    MvWAddCh(treescrn2, 6, 9, (chtype)':');
 
     wattroff(treescrn2, A_BOLD | A_BLINK);
     unset_color(treescrn2);
@@ -366,17 +372,17 @@ strng2(void)
 static int
 strng3(void)
 {
-    (void) wattrset(treescrn2, A_BOLD | A_BLINK);
+    (void)wattrset(treescrn2, A_BOLD | A_BLINK);
     set_color(treescrn2, COLOR_WHITE);
 
-    MvWAddCh(treescrn2, 7, 16, (chtype) '\'');
-    MvWAddCh(treescrn2, 7, 15, (chtype) ':');
-    MvWAddCh(treescrn2, 7, 14, (chtype) '.');
-    MvWAddCh(treescrn2, 7, 13, (chtype) ',');
-    MvWAddCh(treescrn2, 8, 12, (chtype) '\'');
-    MvWAddCh(treescrn2, 8, 11, (chtype) ':');
-    MvWAddCh(treescrn2, 8, 10, (chtype) '.');
-    MvWAddCh(treescrn2, 8, 9, (chtype) ',');
+    MvWAddCh(treescrn2, 7, 16, (chtype)'\'');
+    MvWAddCh(treescrn2, 7, 15, (chtype)':');
+    MvWAddCh(treescrn2, 7, 14, (chtype)'.');
+    MvWAddCh(treescrn2, 7, 13, (chtype)',');
+    MvWAddCh(treescrn2, 8, 12, (chtype)'\'');
+    MvWAddCh(treescrn2, 8, 11, (chtype)':');
+    MvWAddCh(treescrn2, 8, 10, (chtype)'.');
+    MvWAddCh(treescrn2, 8, 9, (chtype)',');
 
     wattroff(treescrn2, A_BOLD | A_BLINK);
     unset_color(treescrn2);
@@ -389,22 +395,22 @@ strng3(void)
 static int
 strng4(void)
 {
-    (void) wattrset(treescrn2, A_BOLD | A_BLINK);
+    (void)wattrset(treescrn2, A_BOLD | A_BLINK);
     set_color(treescrn2, COLOR_WHITE);
 
-    MvWAddCh(treescrn2, 9, 17, (chtype) '\'');
-    MvWAddCh(treescrn2, 9, 16, (chtype) ':');
-    MvWAddCh(treescrn2, 9, 15, (chtype) '.');
-    MvWAddCh(treescrn2, 9, 14, (chtype) ',');
-    MvWAddCh(treescrn2, 10, 13, (chtype) '\'');
-    MvWAddCh(treescrn2, 10, 12, (chtype) ':');
-    MvWAddCh(treescrn2, 10, 11, (chtype) '.');
-    MvWAddCh(treescrn2, 10, 10, (chtype) ',');
-    MvWAddCh(treescrn2, 11, 9, (chtype) '\'');
-    MvWAddCh(treescrn2, 11, 8, (chtype) ':');
-    MvWAddCh(treescrn2, 11, 7, (chtype) '.');
-    MvWAddCh(treescrn2, 11, 6, (chtype) ',');
-    MvWAddCh(treescrn2, 12, 5, (chtype) '\'');
+    MvWAddCh(treescrn2, 9, 17, (chtype)'\'');
+    MvWAddCh(treescrn2, 9, 16, (chtype)':');
+    MvWAddCh(treescrn2, 9, 15, (chtype)'.');
+    MvWAddCh(treescrn2, 9, 14, (chtype)',');
+    MvWAddCh(treescrn2, 10, 13, (chtype)'\'');
+    MvWAddCh(treescrn2, 10, 12, (chtype)':');
+    MvWAddCh(treescrn2, 10, 11, (chtype)'.');
+    MvWAddCh(treescrn2, 10, 10, (chtype)',');
+    MvWAddCh(treescrn2, 11, 9, (chtype)'\'');
+    MvWAddCh(treescrn2, 11, 8, (chtype)':');
+    MvWAddCh(treescrn2, 11, 7, (chtype)'.');
+    MvWAddCh(treescrn2, 11, 6, (chtype)',');
+    MvWAddCh(treescrn2, 12, 5, (chtype)'\'');
 
     wattroff(treescrn2, A_BOLD | A_BLINK);
     unset_color(treescrn2);
@@ -417,17 +423,17 @@ strng4(void)
 static int
 strng5(void)
 {
-    (void) wattrset(treescrn2, A_BOLD | A_BLINK);
+    (void)wattrset(treescrn2, A_BOLD | A_BLINK);
     set_color(treescrn2, COLOR_WHITE);
 
-    MvWAddCh(treescrn2, 11, 19, (chtype) '\'');
-    MvWAddCh(treescrn2, 11, 18, (chtype) ':');
-    MvWAddCh(treescrn2, 11, 17, (chtype) '.');
-    MvWAddCh(treescrn2, 11, 16, (chtype) ',');
-    MvWAddCh(treescrn2, 12, 15, (chtype) '\'');
-    MvWAddCh(treescrn2, 12, 14, (chtype) ':');
-    MvWAddCh(treescrn2, 12, 13, (chtype) '.');
-    MvWAddCh(treescrn2, 12, 12, (chtype) ',');
+    MvWAddCh(treescrn2, 11, 19, (chtype)'\'');
+    MvWAddCh(treescrn2, 11, 18, (chtype)':');
+    MvWAddCh(treescrn2, 11, 17, (chtype)'.');
+    MvWAddCh(treescrn2, 11, 16, (chtype)',');
+    MvWAddCh(treescrn2, 12, 15, (chtype)'\'');
+    MvWAddCh(treescrn2, 12, 14, (chtype)':');
+    MvWAddCh(treescrn2, 12, 13, (chtype)'.');
+    MvWAddCh(treescrn2, 12, 12, (chtype)',');
 
     wattroff(treescrn2, A_BOLD | A_BLINK);
     unset_color(treescrn2);
@@ -445,28 +451,30 @@ blinkit(void)
 {
     static int cycle;
 
-    if (cycle > 4) {
-	cycle = 0;
+    if (cycle > 4)
+    {
+        cycle = 0;
     }
 
     touchwin(treescrn8);
 
-    switch (cycle) {
+    switch (cycle)
+    {
     case 0:
-	overlay(treescrn3, treescrn8);
-	break;
+        overlay(treescrn3, treescrn8);
+        break;
     case 1:
-	overlay(treescrn4, treescrn8);
-	break;
+        overlay(treescrn4, treescrn8);
+        break;
     case 2:
-	overlay(treescrn5, treescrn8);
-	break;
+        overlay(treescrn5, treescrn8);
+        break;
     case 3:
-	overlay(treescrn6, treescrn8);
-	break;
+        overlay(treescrn6, treescrn8);
+        break;
     case 4:
-	overlay(treescrn7, treescrn8);
-	break;
+        overlay(treescrn7, treescrn8);
+        break;
     }
     touchwin(treescrn8);
     wrefresh(treescrn8);
@@ -499,129 +507,144 @@ reindeer(void)
     int looper;
     y_pos = 0;
 
-    for (x_pos = 70; x_pos > 62; x_pos--) {
-	for (looper = 0; looper < 4; looper++) {
-	    MvWAddCh(dotdeer0, y_pos, x_pos, (chtype) '.');
-	    wrefresh(dotdeer0);
-	    wrefresh(w_del_msg);
-	    werase(dotdeer0);
-	    wrefresh(dotdeer0);
-	    wrefresh(w_del_msg);
-	    look_out(50);
-	}
+    for (x_pos = 70; x_pos > 62; x_pos--)
+    {
+        for (looper = 0; looper < 4; looper++)
+        {
+            MvWAddCh(dotdeer0, y_pos, x_pos, (chtype)'.');
+            wrefresh(dotdeer0);
+            wrefresh(w_del_msg);
+            werase(dotdeer0);
+            wrefresh(dotdeer0);
+            wrefresh(w_del_msg);
+            look_out(50);
+        }
     }
 
     y_pos = 2;
 
-    for (; x_pos > 50; x_pos--) {
-	for (looper = 0; looper < 4; looper++) {
+    for (; x_pos > 50; x_pos--)
+    {
+        for (looper = 0; looper < 4; looper++)
+        {
 
-	    if (x_pos < 56) {
-		y_pos = 3;
+            if (x_pos < 56)
+            {
+                y_pos = 3;
 
-		MvWAddCh(stardeer0, y_pos, x_pos, (chtype) '*');
-		wrefresh(stardeer0);
-		wrefresh(w_del_msg);
-		werase(stardeer0);
-		wrefresh(stardeer0);
-		wrefresh(w_del_msg);
-	    } else {
-		MvWAddCh(dotdeer0, y_pos, x_pos, (chtype) '*');
-		wrefresh(dotdeer0);
-		wrefresh(w_del_msg);
-		werase(dotdeer0);
-		wrefresh(dotdeer0);
-		wrefresh(w_del_msg);
-	    }
-	}
+                MvWAddCh(stardeer0, y_pos, x_pos, (chtype)'*');
+                wrefresh(stardeer0);
+                wrefresh(w_del_msg);
+                werase(stardeer0);
+                wrefresh(stardeer0);
+                wrefresh(w_del_msg);
+            }
+            else
+            {
+                MvWAddCh(dotdeer0, y_pos, x_pos, (chtype)'*');
+                wrefresh(dotdeer0);
+                wrefresh(w_del_msg);
+                werase(dotdeer0);
+                wrefresh(dotdeer0);
+                wrefresh(w_del_msg);
+            }
+        }
     }
 
     x_pos = 58;
 
-    for (y_pos = 2; y_pos < 5; y_pos++) {
+    for (y_pos = 2; y_pos < 5; y_pos++)
+    {
 
-	touchwin(lildeer0);
-	wrefresh(lildeer0);
-	wrefresh(w_del_msg);
+        touchwin(lildeer0);
+        wrefresh(lildeer0);
+        wrefresh(w_del_msg);
 
-	for (looper = 0; looper < 4; looper++) {
-	    deer_step(lildeer3, y_pos, x_pos);
-	    deer_step(lildeer2, y_pos, x_pos);
-	    deer_step(lildeer1, y_pos, x_pos);
-	    deer_step(lildeer2, y_pos, x_pos);
-	    deer_step(lildeer3, y_pos, x_pos);
+        for (looper = 0; looper < 4; looper++)
+        {
+            deer_step(lildeer3, y_pos, x_pos);
+            deer_step(lildeer2, y_pos, x_pos);
+            deer_step(lildeer1, y_pos, x_pos);
+            deer_step(lildeer2, y_pos, x_pos);
+            deer_step(lildeer3, y_pos, x_pos);
 
-	    touchwin(lildeer0);
-	    wrefresh(lildeer0);
-	    wrefresh(w_del_msg);
+            touchwin(lildeer0);
+            wrefresh(lildeer0);
+            wrefresh(w_del_msg);
 
-	    x_pos -= 2;
-	}
+            x_pos -= 2;
+        }
     }
 
     x_pos = 35;
 
-    for (y_pos = 5; y_pos < 10; y_pos++) {
+    for (y_pos = 5; y_pos < 10; y_pos++)
+    {
 
-	touchwin(middeer0);
-	wrefresh(middeer0);
-	wrefresh(w_del_msg);
+        touchwin(middeer0);
+        wrefresh(middeer0);
+        wrefresh(w_del_msg);
 
-	for (looper = 0; looper < 2; looper++) {
-	    deer_step(middeer3, y_pos, x_pos);
-	    deer_step(middeer2, y_pos, x_pos);
-	    deer_step(middeer1, y_pos, x_pos);
-	    deer_step(middeer2, y_pos, x_pos);
-	    deer_step(middeer3, y_pos, x_pos);
+        for (looper = 0; looper < 2; looper++)
+        {
+            deer_step(middeer3, y_pos, x_pos);
+            deer_step(middeer2, y_pos, x_pos);
+            deer_step(middeer1, y_pos, x_pos);
+            deer_step(middeer2, y_pos, x_pos);
+            deer_step(middeer3, y_pos, x_pos);
 
-	    touchwin(middeer0);
-	    wrefresh(middeer0);
-	    wrefresh(w_del_msg);
+            touchwin(middeer0);
+            wrefresh(middeer0);
+            wrefresh(w_del_msg);
 
-	    x_pos -= 3;
-	}
+            x_pos -= 3;
+        }
     }
 
     look_out(300);
 
     y_pos = 1;
 
-    for (x_pos = 8; x_pos < 16; x_pos++) {
-	deer_step(bigdeer4, y_pos, x_pos);
-	deer_step(bigdeer3, y_pos, x_pos);
-	deer_step(bigdeer2, y_pos, x_pos);
-	deer_step(bigdeer1, y_pos, x_pos);
-	deer_step(bigdeer2, y_pos, x_pos);
-	deer_step(bigdeer3, y_pos, x_pos);
-	deer_step(bigdeer4, y_pos, x_pos);
-	deer_step(bigdeer0, y_pos, x_pos);
+    for (x_pos = 8; x_pos < 16; x_pos++)
+    {
+        deer_step(bigdeer4, y_pos, x_pos);
+        deer_step(bigdeer3, y_pos, x_pos);
+        deer_step(bigdeer2, y_pos, x_pos);
+        deer_step(bigdeer1, y_pos, x_pos);
+        deer_step(bigdeer2, y_pos, x_pos);
+        deer_step(bigdeer3, y_pos, x_pos);
+        deer_step(bigdeer4, y_pos, x_pos);
+        deer_step(bigdeer0, y_pos, x_pos);
     }
 
     --x_pos;
 
-    for (looper = 0; looper < 6; looper++) {
-	deer_step(lookdeer4, y_pos, x_pos);
-	deer_step(lookdeer3, y_pos, x_pos);
-	deer_step(lookdeer2, y_pos, x_pos);
-	deer_step(lookdeer1, y_pos, x_pos);
-	deer_step(lookdeer2, y_pos, x_pos);
-	deer_step(lookdeer3, y_pos, x_pos);
-	deer_step(lookdeer4, y_pos, x_pos);
+    for (looper = 0; looper < 6; looper++)
+    {
+        deer_step(lookdeer4, y_pos, x_pos);
+        deer_step(lookdeer3, y_pos, x_pos);
+        deer_step(lookdeer2, y_pos, x_pos);
+        deer_step(lookdeer1, y_pos, x_pos);
+        deer_step(lookdeer2, y_pos, x_pos);
+        deer_step(lookdeer3, y_pos, x_pos);
+        deer_step(lookdeer4, y_pos, x_pos);
     }
 
     deer_step(lookdeer0, y_pos, x_pos);
 
-    for (; y_pos < 10; y_pos++) {
-	for (looper = 0; looper < 2; looper++) {
-	    deer_step(bigdeer4, y_pos, x_pos);
-	    deer_step(bigdeer3, y_pos, x_pos);
-	    deer_step(bigdeer2, y_pos, x_pos);
-	    deer_step(bigdeer1, y_pos, x_pos);
-	    deer_step(bigdeer2, y_pos, x_pos);
-	    deer_step(bigdeer3, y_pos, x_pos);
-	    deer_step(bigdeer4, y_pos, x_pos);
-	}
-	deer_step(bigdeer0, y_pos, x_pos);
+    for (; y_pos < 10; y_pos++)
+    {
+        for (looper = 0; looper < 2; looper++)
+        {
+            deer_step(bigdeer4, y_pos, x_pos);
+            deer_step(bigdeer3, y_pos, x_pos);
+            deer_step(bigdeer2, y_pos, x_pos);
+            deer_step(bigdeer1, y_pos, x_pos);
+            deer_step(bigdeer2, y_pos, x_pos);
+            deer_step(bigdeer3, y_pos, x_pos);
+            deer_step(bigdeer4, y_pos, x_pos);
+        }
+        deer_step(bigdeer0, y_pos, x_pos);
     }
 
     --y_pos;
@@ -639,7 +662,7 @@ done(int sig GCC_UNUSED)
 
 #if NO_LEAKS
     if (my_pairs != 0)
-	free(my_pairs);
+        free(my_pairs);
 #endif
 
     ExitProgram(EXIT_SUCCESS);
@@ -650,24 +673,25 @@ usage(void)
 {
     static const char *msg[] =
     {
-	"Usage: xmas [options]"
-	,""
-	,"Options:"
+        "Usage: xmas [options]",
+        "",
+        "Options:"
 #if HAVE_USE_DEFAULT_COLORS
-	," -d       invoke use_default_colors"
+        ,
+        " -d       invoke use_default_colors"
 #endif
-	," -q       execute once, then quit"
+        ,
+        " -q       execute once, then quit"
     };
     size_t n;
 
     for (n = 0; n < SIZEOF(msg); n++)
-	fprintf(stderr, "%s\n", msg[n]);
+        fprintf(stderr, "%s\n", msg[n]);
 
     ExitProgram(EXIT_FAILURE);
 }
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int ch;
     int loopy;
@@ -676,20 +700,22 @@ main(int argc, char *argv[])
 #endif
     bool opt_q = FALSE;
 
-    while ((ch = getopt(argc, argv, "dq")) != -1) {
-	switch (ch) {
+    while ((ch = getopt(argc, argv, "dq")) != -1)
+    {
+        switch (ch)
+        {
 #if HAVE_USE_DEFAULT_COLORS
-	case 'd':
-	    opt_d = TRUE;
-	    break;
+        case 'd':
+            opt_d = TRUE;
+            break;
 #endif
-	case 'q':
-	    opt_q = TRUE;
-	    break;
-	default:
-	    usage();
-	    /* NOTREACHED */
-	}
+        case 'q':
+            opt_q = TRUE;
+            break;
+        default:
+            usage();
+            /* NOTREACHED */
+        }
     }
 
     setlocale(LC_ALL, "");
@@ -699,58 +725,59 @@ main(int argc, char *argv[])
     nonl();
     refresh();
 
-    if (has_colors()) {
-	start_color();
+    if (has_colors())
+    {
+        start_color();
 #if HAVE_USE_DEFAULT_COLORS
-	if (opt_d && (use_default_colors() == OK))
-	    my_bg = -1;
+        if (opt_d && (use_default_colors() == OK))
+            my_bg = -1;
 #endif
     }
     curs_set(0);
 
     if ((treescrn = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn2 = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn3 = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn4 = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn5 = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn6 = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn7 = newwin(16, 27, 3, 53)) == 0 ||
-	(treescrn8 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn2 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn3 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn4 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn5 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn6 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn7 = newwin(16, 27, 3, 53)) == 0 ||
+        (treescrn8 = newwin(16, 27, 3, 53)) == 0 ||
 
-	(dotdeer0 = newwin(3, 71, 0, 8)) == 0 ||
+        (dotdeer0 = newwin(3, 71, 0, 8)) == 0 ||
 
-	(stardeer0 = newwin(4, 56, 0, 8)) == 0 ||
+        (stardeer0 = newwin(4, 56, 0, 8)) == 0 ||
 
-	(lildeer0 = newwin(7, 53, 0, 8)) == 0 ||
-	(lildeer1 = newwin(2, 4, 0, 0)) == 0 ||
-	(lildeer2 = newwin(2, 4, 0, 0)) == 0 ||
-	(lildeer3 = newwin(2, 4, 0, 0)) == 0 ||
+        (lildeer0 = newwin(7, 53, 0, 8)) == 0 ||
+        (lildeer1 = newwin(2, 4, 0, 0)) == 0 ||
+        (lildeer2 = newwin(2, 4, 0, 0)) == 0 ||
+        (lildeer3 = newwin(2, 4, 0, 0)) == 0 ||
 
-	(middeer0 = newwin(15, 42, 0, 8)) == 0 ||
-	(middeer1 = newwin(3, 7, 0, 0)) == 0 ||
-	(middeer2 = newwin(3, 7, 0, 0)) == 0 ||
-	(middeer3 = newwin(3, 7, 0, 0)) == 0 ||
+        (middeer0 = newwin(15, 42, 0, 8)) == 0 ||
+        (middeer1 = newwin(3, 7, 0, 0)) == 0 ||
+        (middeer2 = newwin(3, 7, 0, 0)) == 0 ||
+        (middeer3 = newwin(3, 7, 0, 0)) == 0 ||
 
-	(bigdeer0 = newwin(10, 23, 0, 0)) == 0 ||
-	(bigdeer1 = newwin(10, 23, 0, 0)) == 0 ||
-	(bigdeer2 = newwin(10, 23, 0, 0)) == 0 ||
-	(bigdeer3 = newwin(10, 23, 0, 0)) == 0 ||
-	(bigdeer4 = newwin(10, 23, 0, 0)) == 0 ||
+        (bigdeer0 = newwin(10, 23, 0, 0)) == 0 ||
+        (bigdeer1 = newwin(10, 23, 0, 0)) == 0 ||
+        (bigdeer2 = newwin(10, 23, 0, 0)) == 0 ||
+        (bigdeer3 = newwin(10, 23, 0, 0)) == 0 ||
+        (bigdeer4 = newwin(10, 23, 0, 0)) == 0 ||
 
-	(lookdeer0 = newwin(10, 25, 0, 0)) == 0 ||
-	(lookdeer1 = newwin(10, 25, 0, 0)) == 0 ||
-	(lookdeer2 = newwin(10, 25, 0, 0)) == 0 ||
-	(lookdeer3 = newwin(10, 25, 0, 0)) == 0 ||
-	(lookdeer4 = newwin(10, 25, 0, 0)) == 0 ||
+        (lookdeer0 = newwin(10, 25, 0, 0)) == 0 ||
+        (lookdeer1 = newwin(10, 25, 0, 0)) == 0 ||
+        (lookdeer2 = newwin(10, 25, 0, 0)) == 0 ||
+        (lookdeer3 = newwin(10, 25, 0, 0)) == 0 ||
+        (lookdeer4 = newwin(10, 25, 0, 0)) == 0 ||
 
-	(w_holiday = newwin(1, 26, 3, 27)) == 0 ||
+        (w_holiday = newwin(1, 26, 3, 27)) == 0 ||
 
-	(w_del_msg = newwin(1, 19, 23, 60)) == 0) {
-	stop_curses();
-	fprintf(stderr, "Cannot create windows - screen too small\n");
-	ExitProgram(EXIT_FAILURE);
+        (w_del_msg = newwin(1, 19, 23, 60)) == 0)
+    {
+        stop_curses();
+        fprintf(stderr, "Cannot create windows - screen too small\n");
+        ExitProgram(EXIT_FAILURE);
     }
-
     MvWAddStr(w_del_msg, 0, 0, "Hit any key to quit");
 
     MvWAddStr(w_holiday, 0, 0, "H A P P Y  H O L I D A Y S");
@@ -758,76 +785,76 @@ main(int argc, char *argv[])
     /* set up the windows for our various reindeer */
 
     /* lildeer1 */
-    MvWAddCh(lildeer1, 0, 0, (chtype) 'V');
-    MvWAddCh(lildeer1, 1, 0, (chtype) '@');
-    MvWAddCh(lildeer1, 1, 1, (chtype) '<');
-    MvWAddCh(lildeer1, 1, 2, (chtype) '>');
-    MvWAddCh(lildeer1, 1, 3, (chtype) '~');
+    MvWAddCh(lildeer1, 0, 0, (chtype)'V');
+    MvWAddCh(lildeer1, 1, 0, (chtype)'@');
+    MvWAddCh(lildeer1, 1, 1, (chtype)'<');
+    MvWAddCh(lildeer1, 1, 2, (chtype)'>');
+    MvWAddCh(lildeer1, 1, 3, (chtype)'~');
 
     /* lildeer2 */
-    MvWAddCh(lildeer2, 0, 0, (chtype) 'V');
-    MvWAddCh(lildeer2, 1, 0, (chtype) '@');
-    MvWAddCh(lildeer2, 1, 1, (chtype) '|');
-    MvWAddCh(lildeer2, 1, 2, (chtype) '|');
-    MvWAddCh(lildeer2, 1, 3, (chtype) '~');
+    MvWAddCh(lildeer2, 0, 0, (chtype)'V');
+    MvWAddCh(lildeer2, 1, 0, (chtype)'@');
+    MvWAddCh(lildeer2, 1, 1, (chtype)'|');
+    MvWAddCh(lildeer2, 1, 2, (chtype)'|');
+    MvWAddCh(lildeer2, 1, 3, (chtype)'~');
 
     /* lildeer3 */
-    MvWAddCh(lildeer3, 0, 0, (chtype) 'V');
-    MvWAddCh(lildeer3, 1, 0, (chtype) '@');
-    MvWAddCh(lildeer3, 1, 1, (chtype) '>');
-    MvWAddCh(lildeer3, 1, 2, (chtype) '<');
-    MvWAddCh(lildeer2, 1, 3, (chtype) '~');
+    MvWAddCh(lildeer3, 0, 0, (chtype)'V');
+    MvWAddCh(lildeer3, 1, 0, (chtype)'@');
+    MvWAddCh(lildeer3, 1, 1, (chtype)'>');
+    MvWAddCh(lildeer3, 1, 2, (chtype)'<');
+    MvWAddCh(lildeer2, 1, 3, (chtype)'~');
 
     /* middeer1 */
-    MvWAddCh(middeer1, 0, 2, (chtype) 'y');
-    MvWAddCh(middeer1, 0, 3, (chtype) 'y');
-    MvWAddCh(middeer1, 1, 2, (chtype) '0');
-    MvWAddCh(middeer1, 1, 3, (chtype) '(');
-    MvWAddCh(middeer1, 1, 4, (chtype) '=');
-    MvWAddCh(middeer1, 1, 5, (chtype) ')');
-    MvWAddCh(middeer1, 1, 6, (chtype) '~');
-    MvWAddCh(middeer1, 2, 3, (chtype) '\\');
-    MvWAddCh(middeer1, 2, 4, (chtype) '/');
+    MvWAddCh(middeer1, 0, 2, (chtype)'y');
+    MvWAddCh(middeer1, 0, 3, (chtype)'y');
+    MvWAddCh(middeer1, 1, 2, (chtype)'0');
+    MvWAddCh(middeer1, 1, 3, (chtype)'(');
+    MvWAddCh(middeer1, 1, 4, (chtype)'=');
+    MvWAddCh(middeer1, 1, 5, (chtype)')');
+    MvWAddCh(middeer1, 1, 6, (chtype)'~');
+    MvWAddCh(middeer1, 2, 3, (chtype)'\\');
+    MvWAddCh(middeer1, 2, 4, (chtype)'/');
 
     /* middeer2 */
-    MvWAddCh(middeer2, 0, 2, (chtype) 'y');
-    MvWAddCh(middeer2, 0, 3, (chtype) 'y');
-    MvWAddCh(middeer2, 1, 2, (chtype) '0');
-    MvWAddCh(middeer2, 1, 3, (chtype) '(');
-    MvWAddCh(middeer2, 1, 4, (chtype) '=');
-    MvWAddCh(middeer2, 1, 5, (chtype) ')');
-    MvWAddCh(middeer2, 1, 6, (chtype) '~');
-    MvWAddCh(middeer2, 2, 3, (chtype) '|');
-    MvWAddCh(middeer2, 2, 5, (chtype) '|');
+    MvWAddCh(middeer2, 0, 2, (chtype)'y');
+    MvWAddCh(middeer2, 0, 3, (chtype)'y');
+    MvWAddCh(middeer2, 1, 2, (chtype)'0');
+    MvWAddCh(middeer2, 1, 3, (chtype)'(');
+    MvWAddCh(middeer2, 1, 4, (chtype)'=');
+    MvWAddCh(middeer2, 1, 5, (chtype)')');
+    MvWAddCh(middeer2, 1, 6, (chtype)'~');
+    MvWAddCh(middeer2, 2, 3, (chtype)'|');
+    MvWAddCh(middeer2, 2, 5, (chtype)'|');
 
     /* middeer3 */
-    MvWAddCh(middeer3, 0, 2, (chtype) 'y');
-    MvWAddCh(middeer3, 0, 3, (chtype) 'y');
-    MvWAddCh(middeer3, 1, 2, (chtype) '0');
-    MvWAddCh(middeer3, 1, 3, (chtype) '(');
-    MvWAddCh(middeer3, 1, 4, (chtype) '=');
-    MvWAddCh(middeer3, 1, 5, (chtype) ')');
-    MvWAddCh(middeer3, 1, 6, (chtype) '~');
-    MvWAddCh(middeer3, 2, 2, (chtype) '/');
-    MvWAddCh(middeer3, 2, 6, (chtype) '\\');
+    MvWAddCh(middeer3, 0, 2, (chtype)'y');
+    MvWAddCh(middeer3, 0, 3, (chtype)'y');
+    MvWAddCh(middeer3, 1, 2, (chtype)'0');
+    MvWAddCh(middeer3, 1, 3, (chtype)'(');
+    MvWAddCh(middeer3, 1, 4, (chtype)'=');
+    MvWAddCh(middeer3, 1, 5, (chtype)')');
+    MvWAddCh(middeer3, 1, 6, (chtype)'~');
+    MvWAddCh(middeer3, 2, 2, (chtype)'/');
+    MvWAddCh(middeer3, 2, 6, (chtype)'\\');
 
     /* bigdeer1 */
-    MvWAddCh(bigdeer1, 0, 17, (chtype) '\\');
-    MvWAddCh(bigdeer1, 0, 18, (chtype) '/');
-    MvWAddCh(bigdeer1, 0, 20, (chtype) '\\');
-    MvWAddCh(bigdeer1, 0, 21, (chtype) '/');
-    MvWAddCh(bigdeer1, 1, 18, (chtype) '\\');
-    MvWAddCh(bigdeer1, 1, 20, (chtype) '/');
-    MvWAddCh(bigdeer1, 2, 19, (chtype) '|');
-    MvWAddCh(bigdeer1, 2, 20, (chtype) '_');
-    MvWAddCh(bigdeer1, 3, 18, (chtype) '/');
-    MvWAddCh(bigdeer1, 3, 19, (chtype) '^');
-    MvWAddCh(bigdeer1, 3, 20, (chtype) '0');
-    MvWAddCh(bigdeer1, 3, 21, (chtype) '\\');
-    MvWAddCh(bigdeer1, 4, 17, (chtype) '/');
-    MvWAddCh(bigdeer1, 4, 18, (chtype) '/');
-    MvWAddCh(bigdeer1, 4, 19, (chtype) '\\');
-    MvWAddCh(bigdeer1, 4, 22, (chtype) '\\');
+    MvWAddCh(bigdeer1, 0, 17, (chtype)'\\');
+    MvWAddCh(bigdeer1, 0, 18, (chtype)'/');
+    MvWAddCh(bigdeer1, 0, 20, (chtype)'\\');
+    MvWAddCh(bigdeer1, 0, 21, (chtype)'/');
+    MvWAddCh(bigdeer1, 1, 18, (chtype)'\\');
+    MvWAddCh(bigdeer1, 1, 20, (chtype)'/');
+    MvWAddCh(bigdeer1, 2, 19, (chtype)'|');
+    MvWAddCh(bigdeer1, 2, 20, (chtype)'_');
+    MvWAddCh(bigdeer1, 3, 18, (chtype)'/');
+    MvWAddCh(bigdeer1, 3, 19, (chtype)'^');
+    MvWAddCh(bigdeer1, 3, 20, (chtype)'0');
+    MvWAddCh(bigdeer1, 3, 21, (chtype)'\\');
+    MvWAddCh(bigdeer1, 4, 17, (chtype)'/');
+    MvWAddCh(bigdeer1, 4, 18, (chtype)'/');
+    MvWAddCh(bigdeer1, 4, 19, (chtype)'\\');
+    MvWAddCh(bigdeer1, 4, 22, (chtype)'\\');
     MvWAddStr(bigdeer1, 5, 7, "^~~~~~~~~//  ~~U");
     MvWAddStr(bigdeer1, 6, 7, "( \\_____( /");
     MvWAddStr(bigdeer1, 7, 8, "( )    /");
@@ -835,22 +862,22 @@ main(int argc, char *argv[])
     MvWAddStr(bigdeer1, 9, 11, "\\>/>");
 
     /* bigdeer2 */
-    MvWAddCh(bigdeer2, 0, 17, (chtype) '\\');
-    MvWAddCh(bigdeer2, 0, 18, (chtype) '/');
-    MvWAddCh(bigdeer2, 0, 20, (chtype) '\\');
-    MvWAddCh(bigdeer2, 0, 21, (chtype) '/');
-    MvWAddCh(bigdeer2, 1, 18, (chtype) '\\');
-    MvWAddCh(bigdeer2, 1, 20, (chtype) '/');
-    MvWAddCh(bigdeer2, 2, 19, (chtype) '|');
-    MvWAddCh(bigdeer2, 2, 20, (chtype) '_');
-    MvWAddCh(bigdeer2, 3, 18, (chtype) '/');
-    MvWAddCh(bigdeer2, 3, 19, (chtype) '^');
-    MvWAddCh(bigdeer2, 3, 20, (chtype) '0');
-    MvWAddCh(bigdeer2, 3, 21, (chtype) '\\');
-    MvWAddCh(bigdeer2, 4, 17, (chtype) '/');
-    MvWAddCh(bigdeer2, 4, 18, (chtype) '/');
-    MvWAddCh(bigdeer2, 4, 19, (chtype) '\\');
-    MvWAddCh(bigdeer2, 4, 22, (chtype) '\\');
+    MvWAddCh(bigdeer2, 0, 17, (chtype)'\\');
+    MvWAddCh(bigdeer2, 0, 18, (chtype)'/');
+    MvWAddCh(bigdeer2, 0, 20, (chtype)'\\');
+    MvWAddCh(bigdeer2, 0, 21, (chtype)'/');
+    MvWAddCh(bigdeer2, 1, 18, (chtype)'\\');
+    MvWAddCh(bigdeer2, 1, 20, (chtype)'/');
+    MvWAddCh(bigdeer2, 2, 19, (chtype)'|');
+    MvWAddCh(bigdeer2, 2, 20, (chtype)'_');
+    MvWAddCh(bigdeer2, 3, 18, (chtype)'/');
+    MvWAddCh(bigdeer2, 3, 19, (chtype)'^');
+    MvWAddCh(bigdeer2, 3, 20, (chtype)'0');
+    MvWAddCh(bigdeer2, 3, 21, (chtype)'\\');
+    MvWAddCh(bigdeer2, 4, 17, (chtype)'/');
+    MvWAddCh(bigdeer2, 4, 18, (chtype)'/');
+    MvWAddCh(bigdeer2, 4, 19, (chtype)'\\');
+    MvWAddCh(bigdeer2, 4, 22, (chtype)'\\');
     MvWAddStr(bigdeer2, 5, 7, "^~~~~~~~~//  ~~U");
     MvWAddStr(bigdeer2, 6, 7, "(( )____( /");
     MvWAddStr(bigdeer2, 7, 7, "( /      |");
@@ -858,22 +885,22 @@ main(int argc, char *argv[])
     MvWAddStr(bigdeer2, 9, 9, "|>     |>");
 
     /* bigdeer3 */
-    MvWAddCh(bigdeer3, 0, 17, (chtype) '\\');
-    MvWAddCh(bigdeer3, 0, 18, (chtype) '/');
-    MvWAddCh(bigdeer3, 0, 20, (chtype) '\\');
-    MvWAddCh(bigdeer3, 0, 21, (chtype) '/');
-    MvWAddCh(bigdeer3, 1, 18, (chtype) '\\');
-    MvWAddCh(bigdeer3, 1, 20, (chtype) '/');
-    MvWAddCh(bigdeer3, 2, 19, (chtype) '|');
-    MvWAddCh(bigdeer3, 2, 20, (chtype) '_');
-    MvWAddCh(bigdeer3, 3, 18, (chtype) '/');
-    MvWAddCh(bigdeer3, 3, 19, (chtype) '^');
-    MvWAddCh(bigdeer3, 3, 20, (chtype) '0');
-    MvWAddCh(bigdeer3, 3, 21, (chtype) '\\');
-    MvWAddCh(bigdeer3, 4, 17, (chtype) '/');
-    MvWAddCh(bigdeer3, 4, 18, (chtype) '/');
-    MvWAddCh(bigdeer3, 4, 19, (chtype) '\\');
-    MvWAddCh(bigdeer3, 4, 22, (chtype) '\\');
+    MvWAddCh(bigdeer3, 0, 17, (chtype)'\\');
+    MvWAddCh(bigdeer3, 0, 18, (chtype)'/');
+    MvWAddCh(bigdeer3, 0, 20, (chtype)'\\');
+    MvWAddCh(bigdeer3, 0, 21, (chtype)'/');
+    MvWAddCh(bigdeer3, 1, 18, (chtype)'\\');
+    MvWAddCh(bigdeer3, 1, 20, (chtype)'/');
+    MvWAddCh(bigdeer3, 2, 19, (chtype)'|');
+    MvWAddCh(bigdeer3, 2, 20, (chtype)'_');
+    MvWAddCh(bigdeer3, 3, 18, (chtype)'/');
+    MvWAddCh(bigdeer3, 3, 19, (chtype)'^');
+    MvWAddCh(bigdeer3, 3, 20, (chtype)'0');
+    MvWAddCh(bigdeer3, 3, 21, (chtype)'\\');
+    MvWAddCh(bigdeer3, 4, 17, (chtype)'/');
+    MvWAddCh(bigdeer3, 4, 18, (chtype)'/');
+    MvWAddCh(bigdeer3, 4, 19, (chtype)'\\');
+    MvWAddCh(bigdeer3, 4, 22, (chtype)'\\');
     MvWAddStr(bigdeer3, 5, 7, "^~~~~~~~~//  ~~U");
     MvWAddStr(bigdeer3, 6, 6, "( ()_____( /");
     MvWAddStr(bigdeer3, 7, 6, "/ /       /");
@@ -881,22 +908,22 @@ main(int argc, char *argv[])
     MvWAddStr(bigdeer3, 9, 5, "/>           \\>");
 
     /* bigdeer4 */
-    MvWAddCh(bigdeer4, 0, 17, (chtype) '\\');
-    MvWAddCh(bigdeer4, 0, 18, (chtype) '/');
-    MvWAddCh(bigdeer4, 0, 20, (chtype) '\\');
-    MvWAddCh(bigdeer4, 0, 21, (chtype) '/');
-    MvWAddCh(bigdeer4, 1, 18, (chtype) '\\');
-    MvWAddCh(bigdeer4, 1, 20, (chtype) '/');
-    MvWAddCh(bigdeer4, 2, 19, (chtype) '|');
-    MvWAddCh(bigdeer4, 2, 20, (chtype) '_');
-    MvWAddCh(bigdeer4, 3, 18, (chtype) '/');
-    MvWAddCh(bigdeer4, 3, 19, (chtype) '^');
-    MvWAddCh(bigdeer4, 3, 20, (chtype) '0');
-    MvWAddCh(bigdeer4, 3, 21, (chtype) '\\');
-    MvWAddCh(bigdeer4, 4, 17, (chtype) '/');
-    MvWAddCh(bigdeer4, 4, 18, (chtype) '/');
-    MvWAddCh(bigdeer4, 4, 19, (chtype) '\\');
-    MvWAddCh(bigdeer4, 4, 22, (chtype) '\\');
+    MvWAddCh(bigdeer4, 0, 17, (chtype)'\\');
+    MvWAddCh(bigdeer4, 0, 18, (chtype)'/');
+    MvWAddCh(bigdeer4, 0, 20, (chtype)'\\');
+    MvWAddCh(bigdeer4, 0, 21, (chtype)'/');
+    MvWAddCh(bigdeer4, 1, 18, (chtype)'\\');
+    MvWAddCh(bigdeer4, 1, 20, (chtype)'/');
+    MvWAddCh(bigdeer4, 2, 19, (chtype)'|');
+    MvWAddCh(bigdeer4, 2, 20, (chtype)'_');
+    MvWAddCh(bigdeer4, 3, 18, (chtype)'/');
+    MvWAddCh(bigdeer4, 3, 19, (chtype)'^');
+    MvWAddCh(bigdeer4, 3, 20, (chtype)'0');
+    MvWAddCh(bigdeer4, 3, 21, (chtype)'\\');
+    MvWAddCh(bigdeer4, 4, 17, (chtype)'/');
+    MvWAddCh(bigdeer4, 4, 18, (chtype)'/');
+    MvWAddCh(bigdeer4, 4, 19, (chtype)'\\');
+    MvWAddCh(bigdeer4, 4, 22, (chtype)'\\');
     MvWAddStr(bigdeer4, 5, 7, "^~~~~~~~~//  ~~U");
     MvWAddStr(bigdeer4, 6, 6, "( )______( /");
     MvWAddStr(bigdeer4, 7, 5, "(/          \\");
@@ -949,223 +976,225 @@ main(int argc, char *argv[])
     MvWAddStr(lookdeer4, 7, 5, "(/          \\");
     MvWAddStr(lookdeer4, 8, 0, "v___=             ----^");
 
-	/***********************************************/
+    /***********************************************/
     cbreak();
     nodelay(stdscr, TRUE);
-    do {
-	clear();
-	werase(treescrn);
-	touchwin(w_del_msg);
-	touchwin(treescrn);
-	werase(treescrn2);
-	touchwin(treescrn2);
-	werase(treescrn8);
-	touchwin(treescrn8);
-	refresh();
-	look_out(150);
-	boxit();
-	refresh();
-	look_out(150);
-	seas();
-	refresh();
-	look_out(150);
-	greet();
-	refresh();
-	look_out(150);
-	fromwho();
-	refresh();
-	look_out(150);
-	tree();
-	look_out(150);
-	balls();
-	look_out(150);
-	star();
-	look_out(150);
-	strng1();
-	strng2();
-	strng3();
-	strng4();
-	strng5();
+    do
+    {
+        clear();
+        werase(treescrn);
+        touchwin(w_del_msg);
+        touchwin(treescrn);
+        werase(treescrn2);
+        touchwin(treescrn2);
+        werase(treescrn8);
+        touchwin(treescrn8);
+        refresh();
+        look_out(150);
+        boxit();
+        refresh();
+        look_out(150);
+        seas();
+        refresh();
+        look_out(150);
+        greet();
+        refresh();
+        look_out(150);
+        fromwho();
+        refresh();
+        look_out(150);
+        tree();
+        look_out(150);
+        balls();
+        look_out(150);
+        star();
+        look_out(150);
+        strng1();
+        strng2();
+        strng3();
+        strng4();
+        strng5();
 
-	/* set up the windows for our blinking trees */
-	/* **************************************** */
-	/* treescrn3 */
+        /* set up the windows for our blinking trees */
+        /* **************************************** */
+        /* treescrn3 */
 
-	overlay(treescrn, treescrn3);
+        overlay(treescrn, treescrn3);
 
-	/*balls */
-	MvWAddCh(treescrn3, 4, 18, ' ');
-	MvWAddCh(treescrn3, 7, 6, ' ');
-	MvWAddCh(treescrn3, 8, 19, ' ');
-	MvWAddCh(treescrn3, 11, 22, ' ');
+        /*balls */
+        MvWAddCh(treescrn3, 4, 18, ' ');
+        MvWAddCh(treescrn3, 7, 6, ' ');
+        MvWAddCh(treescrn3, 8, 19, ' ');
+        MvWAddCh(treescrn3, 11, 22, ' ');
 
-	/*star */
-	MvWAddCh(treescrn3, 0, 12, '*');
+        /*star */
+        MvWAddCh(treescrn3, 0, 12, '*');
 
-	/*strng1 */
-	MvWAddCh(treescrn3, 3, 11, ' ');
+        /*strng1 */
+        MvWAddCh(treescrn3, 3, 11, ' ');
 
-	/*strng2 */
-	MvWAddCh(treescrn3, 5, 13, ' ');
-	MvWAddCh(treescrn3, 6, 10, ' ');
+        /*strng2 */
+        MvWAddCh(treescrn3, 5, 13, ' ');
+        MvWAddCh(treescrn3, 6, 10, ' ');
 
-	/*strng3 */
-	MvWAddCh(treescrn3, 7, 16, ' ');
-	MvWAddCh(treescrn3, 7, 14, ' ');
+        /*strng3 */
+        MvWAddCh(treescrn3, 7, 16, ' ');
+        MvWAddCh(treescrn3, 7, 14, ' ');
 
-	/*strng4 */
-	MvWAddCh(treescrn3, 10, 13, ' ');
-	MvWAddCh(treescrn3, 10, 10, ' ');
-	MvWAddCh(treescrn3, 11, 8, ' ');
+        /*strng4 */
+        MvWAddCh(treescrn3, 10, 13, ' ');
+        MvWAddCh(treescrn3, 10, 10, ' ');
+        MvWAddCh(treescrn3, 11, 8, ' ');
 
-	/*strng5 */
-	MvWAddCh(treescrn3, 11, 18, ' ');
-	MvWAddCh(treescrn3, 12, 13, ' ');
+        /*strng5 */
+        MvWAddCh(treescrn3, 11, 18, ' ');
+        MvWAddCh(treescrn3, 12, 13, ' ');
 
-	/* treescrn4 */
+        /* treescrn4 */
 
-	overlay(treescrn, treescrn4);
+        overlay(treescrn, treescrn4);
 
-	/*balls */
-	MvWAddCh(treescrn4, 3, 9, ' ');
-	MvWAddCh(treescrn4, 4, 16, ' ');
-	MvWAddCh(treescrn4, 7, 6, ' ');
-	MvWAddCh(treescrn4, 8, 19, ' ');
-	MvWAddCh(treescrn4, 11, 2, ' ');
-	MvWAddCh(treescrn4, 12, 23, ' ');
+        /*balls */
+        MvWAddCh(treescrn4, 3, 9, ' ');
+        MvWAddCh(treescrn4, 4, 16, ' ');
+        MvWAddCh(treescrn4, 7, 6, ' ');
+        MvWAddCh(treescrn4, 8, 19, ' ');
+        MvWAddCh(treescrn4, 11, 2, ' ');
+        MvWAddCh(treescrn4, 12, 23, ' ');
 
-	/*star */
-	(void) wstandout(treescrn4);
-	MvWAddCh(treescrn4, 0, 12, '*');
-	(void) wstandend(treescrn4);
+        /*star */
+        (void)wstandout(treescrn4);
+        MvWAddCh(treescrn4, 0, 12, '*');
+        (void)wstandend(treescrn4);
 
-	/*strng1 */
-	MvWAddCh(treescrn4, 3, 13, ' ');
+        /*strng1 */
+        MvWAddCh(treescrn4, 3, 13, ' ');
 
-	/*strng2 */
+        /*strng2 */
 
-	/*strng3 */
-	MvWAddCh(treescrn4, 7, 15, ' ');
-	MvWAddCh(treescrn4, 8, 11, ' ');
+        /*strng3 */
+        MvWAddCh(treescrn4, 7, 15, ' ');
+        MvWAddCh(treescrn4, 8, 11, ' ');
 
-	/*strng4 */
-	MvWAddCh(treescrn4, 9, 16, ' ');
-	MvWAddCh(treescrn4, 10, 12, ' ');
-	MvWAddCh(treescrn4, 11, 8, ' ');
+        /*strng4 */
+        MvWAddCh(treescrn4, 9, 16, ' ');
+        MvWAddCh(treescrn4, 10, 12, ' ');
+        MvWAddCh(treescrn4, 11, 8, ' ');
 
-	/*strng5 */
-	MvWAddCh(treescrn4, 11, 18, ' ');
-	MvWAddCh(treescrn4, 12, 14, ' ');
+        /*strng5 */
+        MvWAddCh(treescrn4, 11, 18, ' ');
+        MvWAddCh(treescrn4, 12, 14, ' ');
 
-	/* treescrn5 */
+        /* treescrn5 */
 
-	overlay(treescrn, treescrn5);
+        overlay(treescrn, treescrn5);
 
-	/*balls */
-	MvWAddCh(treescrn5, 3, 15, ' ');
-	MvWAddCh(treescrn5, 10, 20, ' ');
-	MvWAddCh(treescrn5, 12, 1, ' ');
+        /*balls */
+        MvWAddCh(treescrn5, 3, 15, ' ');
+        MvWAddCh(treescrn5, 10, 20, ' ');
+        MvWAddCh(treescrn5, 12, 1, ' ');
 
-	/*star */
-	MvWAddCh(treescrn5, 0, 12, '*');
+        /*star */
+        MvWAddCh(treescrn5, 0, 12, '*');
 
-	/*strng1 */
-	MvWAddCh(treescrn5, 3, 11, ' ');
+        /*strng1 */
+        MvWAddCh(treescrn5, 3, 11, ' ');
 
-	/*strng2 */
-	MvWAddCh(treescrn5, 5, 12, ' ');
+        /*strng2 */
+        MvWAddCh(treescrn5, 5, 12, ' ');
 
-	/*strng3 */
-	MvWAddCh(treescrn5, 7, 14, ' ');
-	MvWAddCh(treescrn5, 8, 10, ' ');
+        /*strng3 */
+        MvWAddCh(treescrn5, 7, 14, ' ');
+        MvWAddCh(treescrn5, 8, 10, ' ');
 
-	/*strng4 */
-	MvWAddCh(treescrn5, 9, 15, ' ');
-	MvWAddCh(treescrn5, 10, 11, ' ');
-	MvWAddCh(treescrn5, 11, 7, ' ');
+        /*strng4 */
+        MvWAddCh(treescrn5, 9, 15, ' ');
+        MvWAddCh(treescrn5, 10, 11, ' ');
+        MvWAddCh(treescrn5, 11, 7, ' ');
 
-	/*strng5 */
-	MvWAddCh(treescrn5, 11, 17, ' ');
-	MvWAddCh(treescrn5, 12, 13, ' ');
+        /*strng5 */
+        MvWAddCh(treescrn5, 11, 17, ' ');
+        MvWAddCh(treescrn5, 12, 13, ' ');
 
-	/* treescrn6 */
+        /* treescrn6 */
 
-	overlay(treescrn, treescrn6);
+        overlay(treescrn, treescrn6);
 
-	/*balls */
-	MvWAddCh(treescrn6, 6, 7, ' ');
-	MvWAddCh(treescrn6, 7, 18, ' ');
-	MvWAddCh(treescrn6, 10, 4, ' ');
-	MvWAddCh(treescrn6, 11, 23, ' ');
+        /*balls */
+        MvWAddCh(treescrn6, 6, 7, ' ');
+        MvWAddCh(treescrn6, 7, 18, ' ');
+        MvWAddCh(treescrn6, 10, 4, ' ');
+        MvWAddCh(treescrn6, 11, 23, ' ');
 
-	/*star */
-	(void) wstandout(treescrn6);
-	MvWAddCh(treescrn6, 0, 12, '*');
-	(void) wstandend(treescrn6);
+        /*star */
+        (void)wstandout(treescrn6);
+        MvWAddCh(treescrn6, 0, 12, '*');
+        (void)wstandend(treescrn6);
 
-	/*strng1 */
+        /*strng1 */
 
-	/*strng2 */
-	MvWAddCh(treescrn6, 5, 11, ' ');
+        /*strng2 */
+        MvWAddCh(treescrn6, 5, 11, ' ');
 
-	/*strng3 */
-	MvWAddCh(treescrn6, 7, 13, ' ');
-	MvWAddCh(treescrn6, 8, 9, ' ');
+        /*strng3 */
+        MvWAddCh(treescrn6, 7, 13, ' ');
+        MvWAddCh(treescrn6, 8, 9, ' ');
 
-	/*strng4 */
-	MvWAddCh(treescrn6, 9, 14, ' ');
-	MvWAddCh(treescrn6, 10, 10, ' ');
-	MvWAddCh(treescrn6, 11, 6, ' ');
+        /*strng4 */
+        MvWAddCh(treescrn6, 9, 14, ' ');
+        MvWAddCh(treescrn6, 10, 10, ' ');
+        MvWAddCh(treescrn6, 11, 6, ' ');
 
-	/*strng5 */
-	MvWAddCh(treescrn6, 11, 16, ' ');
-	MvWAddCh(treescrn6, 12, 12, ' ');
+        /*strng5 */
+        MvWAddCh(treescrn6, 11, 16, ' ');
+        MvWAddCh(treescrn6, 12, 12, ' ');
 
-	/* treescrn7 */
+        /* treescrn7 */
 
-	overlay(treescrn, treescrn7);
+        overlay(treescrn, treescrn7);
 
-	/*balls */
-	MvWAddCh(treescrn7, 3, 15, ' ');
-	MvWAddCh(treescrn7, 6, 7, ' ');
-	MvWAddCh(treescrn7, 7, 18, ' ');
-	MvWAddCh(treescrn7, 10, 4, ' ');
-	MvWAddCh(treescrn7, 11, 22, ' ');
+        /*balls */
+        MvWAddCh(treescrn7, 3, 15, ' ');
+        MvWAddCh(treescrn7, 6, 7, ' ');
+        MvWAddCh(treescrn7, 7, 18, ' ');
+        MvWAddCh(treescrn7, 10, 4, ' ');
+        MvWAddCh(treescrn7, 11, 22, ' ');
 
-	/*star */
-	MvWAddCh(treescrn7, 0, 12, '*');
+        /*star */
+        MvWAddCh(treescrn7, 0, 12, '*');
 
-	/*strng1 */
-	MvWAddCh(treescrn7, 3, 12, ' ');
+        /*strng1 */
+        MvWAddCh(treescrn7, 3, 12, ' ');
 
-	/*strng2 */
-	MvWAddCh(treescrn7, 5, 13, ' ');
-	MvWAddCh(treescrn7, 6, 9, ' ');
+        /*strng2 */
+        MvWAddCh(treescrn7, 5, 13, ' ');
+        MvWAddCh(treescrn7, 6, 9, ' ');
 
-	/*strng3 */
-	MvWAddCh(treescrn7, 7, 15, ' ');
-	MvWAddCh(treescrn7, 8, 11, ' ');
+        /*strng3 */
+        MvWAddCh(treescrn7, 7, 15, ' ');
+        MvWAddCh(treescrn7, 8, 11, ' ');
 
-	/*strng4 */
-	MvWAddCh(treescrn7, 9, 16, ' ');
-	MvWAddCh(treescrn7, 10, 12, ' ');
-	MvWAddCh(treescrn7, 11, 8, ' ');
+        /*strng4 */
+        MvWAddCh(treescrn7, 9, 16, ' ');
+        MvWAddCh(treescrn7, 10, 12, ' ');
+        MvWAddCh(treescrn7, 11, 8, ' ');
 
-	/*strng5 */
-	MvWAddCh(treescrn7, 11, 18, ' ');
-	MvWAddCh(treescrn7, 12, 14, ' ');
+        /*strng5 */
+        MvWAddCh(treescrn7, 11, 18, ' ');
+        MvWAddCh(treescrn7, 12, 14, ' ');
 
-	look_out(150);
-	reindeer();
+        look_out(150);
+        reindeer();
 
-	touchwin(w_holiday);
-	wrefresh(w_holiday);
-	wrefresh(w_del_msg);
+        touchwin(w_holiday);
+        wrefresh(w_holiday);
+        wrefresh(w_del_msg);
 
-	look_out(500);
-	for (loopy = 0; loopy < 100; loopy++) {
-	    blinkit();
-	}
+        look_out(500);
+        for (loopy = 0; loopy < 100; loopy++)
+        {
+            blinkit();
+        }
     } while (!opt_q);
     done(0);
 }
