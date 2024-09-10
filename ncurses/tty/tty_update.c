@@ -400,9 +400,10 @@ check_pending(NCURSES_SP_DCL0)
 	if (howmany >= 0 && n > 0) {
 	    have_pending = TRUE;
 	}
-#elif HAVE_SELECT
+#elif HAVE_SELECT && !defined(__amigaos4__)
 	fd_set fdset;
 	struct timeval ktimeout;
+
 
 	ktimeout.tv_sec =
 	    ktimeout.tv_usec = 0;

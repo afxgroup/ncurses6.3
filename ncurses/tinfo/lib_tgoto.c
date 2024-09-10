@@ -197,7 +197,11 @@ tgoto_internal(const char *string, int x, int y)
  * the last two arguments when invoking tparm().
  */
 NCURSES_EXPORT(char *)
+#ifndef __amigaos__
 tgoto(const char *string, int x, int y)
+#else
+_tgoto(const char *string, int x, int y)
+#endif
 {
     char *result;
 

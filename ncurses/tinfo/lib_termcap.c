@@ -205,11 +205,13 @@ NCURSES_SP_NAME(tgetent) (NCURSES_SP_DCLx char *bufp, const char *name)
 }
 
 #if NCURSES_SP_FUNCS
+#ifndef __amigaos4__
 NCURSES_EXPORT(int)
 tgetent(char *bufp, const char *name)
 {
     return NCURSES_SP_NAME(tgetent) (CURRENT_SCREEN, bufp, name);
 }
+#endif
 #endif
 
 #if 0
@@ -270,11 +272,13 @@ NCURSES_SP_NAME(tgetflag) (NCURSES_SP_DCLx const char *id)
 }
 
 #if NCURSES_SP_FUNCS
+#ifndef __amigaos4__
 NCURSES_EXPORT(int)
 tgetflag(const char *id)
 {
     return NCURSES_SP_NAME(tgetflag) (CURRENT_SCREEN, id);
 }
+#endif
 #endif
 
 /***************************************************************************
@@ -322,11 +326,13 @@ NCURSES_SP_NAME(tgetnum) (NCURSES_SP_DCLx const char *id)
 }
 
 #if NCURSES_SP_FUNCS
+#ifndef __amigaos4__
 NCURSES_EXPORT(int)
 tgetnum(const char *id)
 {
     return NCURSES_SP_NAME(tgetnum) (CURRENT_SCREEN, id);
 }
+#endif
 #endif
 
 /***************************************************************************
@@ -388,11 +394,13 @@ NCURSES_SP_NAME(tgetstr) (NCURSES_SP_DCLx const char *id, char **area)
 }
 
 #if NCURSES_SP_FUNCS
+#ifndef __amigaos4__
 NCURSES_EXPORT(char *)
 tgetstr(const char *id, char **area)
 {
     return NCURSES_SP_NAME(tgetstr) (CURRENT_SCREEN, id, area);
 }
+#endif
 #endif
 
 #if NO_LEAKS

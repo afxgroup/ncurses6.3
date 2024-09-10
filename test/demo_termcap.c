@@ -892,7 +892,7 @@ main(int argc, char *argv[])
     printf("%ld values (%ld booleans, %ld numbers, %ld strings)\n",
 	   total_values, total_b_values, total_n_values, total_s_values);
 
-#if defined(NCURSES_VERSION) || defined(HAVE_CURSES_DATA_OSPEED)
+#if (defined(NCURSES_VERSION) || defined(HAVE_CURSES_DATA_OSPEED)) && !defined(__amigaos4__)
     if (v_opt) {
 	show_number("PC", PC);
 	show_string("UP", UP);

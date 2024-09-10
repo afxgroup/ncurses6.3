@@ -444,11 +444,12 @@ _nc_outc_wrapper(SCREEN *sp, int c)
 	return sp->jump(c);
     }
 }
-
+#ifndef __amigaos4__
 NCURSES_EXPORT(int)
 tputs(const char *string, int affcnt, int (*outc) (int))
 {
     SetSafeOutcWrapper(outc);
     return NCURSES_SP_NAME(tputs) (NCURSES_SP_ARGx string, affcnt, _nc_outc_wrapper);
 }
+#endif
 #endif

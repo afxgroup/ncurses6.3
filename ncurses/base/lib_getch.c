@@ -265,7 +265,9 @@ fifo_push(SCREEN *sp EVENTLIST_2nd(_nc_eventlist *evl))
 {
 	int n;
 	int ch = 0;
+#ifdef __amigaos4__	
 	int repl = 0;
+#endif	
 	int mask = 0;
 
 	(void)mask;
@@ -385,113 +387,137 @@ fifo_push(SCREEN *sp EVENTLIST_2nd(_nc_eventlist *evl))
 #else
 		n = (int)read(sp->_ifd, &c2, (size_t)1);
 		#ifdef __amigaos4__
-			/* Hack to get correct cursor keys */
-			if (c2 == 155) {
-				char buffer[4] = {0};
-				n = (int)read(sp->_ifd, &c2, (size_t)1);
-				if (n > 0) {
-					buffer[0] = c2;
+			if (n > 0) {
+				/* Hack to get correct cursor keys */
+				if (c2 == 155) {
+					char buffer[4] = {0};
+					n = (int)read(sp->_ifd, &c2, (size_t)1);
+					if (n > 0) {
+						buffer[0] = c2;
 						if (isdigit(c2)) {
-						n = (int)read(sp->_ifd, &c2, (size_t)1);
-						if (n > 0) {
-							buffer[1] = c2;
-							if (isdigit(c2)) {
-								n = (int)read(sp->_ifd, &c2, (size_t)1);
-								if (n > 0) {
-									buffer[2] = c2; // This should be always ~
+							n = (int)read(sp->_ifd, &c2, (size_t)1);
+							if (n > 0) {
+								buffer[1] = c2;
+								if (isdigit(c2)) {
+									n = (int)read(sp->_ifd, &c2, (size_t)1);
+									if (n > 0) {
+										buffer[2] = c2; // This should be always ~
+									}
 								}
 							}
 						}
 					}
-				}
-				if (!strcmp(buffer, "C")) {
-					repl = 1;
-					ch = KEY_RIGHT;
-				}
-				else if (!strcmp(buffer, "D")) {
-					repl = 1;
-					ch = KEY_LEFT;
-				}
-				else if (!strcmp(buffer, "A")) {
-					repl = 1;
-					ch = KEY_UP;
-				}
-				else if (!strcmp(buffer, "B")) {
-					repl = 1;
-					ch = KEY_DOWN;
-				}
-				else if (!strcmp(buffer, "0~")) {
-					repl = 1;
-					ch = KEY_F(1);
-				}
-				else if (!strcmp(buffer, "1~")) {
-					repl = 1;
-					ch = KEY_F(2);
-				}
-				else if (!strcmp(buffer, "2~")) {
-					repl = 1;
-					ch = KEY_F(3);
-				}
-				else if (!strcmp(buffer, "3~")) {
-					repl = 1;
-					ch = KEY_F(4);
-				}
-				else if (!strcmp(buffer, "4~")) {
-					repl = 1;
-					ch = KEY_F(5);
-				}
-				else if (!strcmp(buffer, "5~")) {
-					repl = 1;
-					ch = KEY_F(6);
-				}
-				else if (!strcmp(buffer, "6~")) {
-					repl = 1;
-					ch = KEY_F(7);
-				}
-				else if (!strcmp(buffer, "7~")) {
-					repl = 1;
-					ch = KEY_F(8);
-				}
-				else if (!strcmp(buffer, "8~")) {
-					repl = 1;
-					ch = KEY_F(9);
-				}
-				else if (!strcmp(buffer, "9~")) {
-					repl = 1;
-					ch = KEY_F(10);
-				}
-				else if (!strcmp(buffer, "20~")) {
-					repl = 1;
-					ch = KEY_F(11);
-				}
-				else if (!strcmp(buffer, "21~")) {
-					repl = 1;
-					ch = KEY_F(12);
-				}
-				else if (!strcmp(buffer, "41~")) {
-					repl = 1;
-					ch = KEY_PPAGE;
-				}
-				else if (!strcmp(buffer, "42~")) {
-					repl = 1;
-					ch = KEY_NPAGE;
-				}
-				else if (!strcmp(buffer, "43~")) {
-					repl = 1;
-					ch = KEY_BREAK;
-				}
-				else if (!strcmp(buffer, "44~")) {
-					repl = 1;
-					ch = KEY_HOME;
-				}
-				else if (!strcmp(buffer, "45~")) {
-					repl = 1;
-					ch = KEY_END;
+					if (!strcmp(buffer, "12;")) {
+						/* 12; is a window resize message 
+						* so we should strip all uneeded chars
+						*/
+						while (c2 != '|') {
+							read(sp->_ifd, &c2, (size_t)1);
+						}
+						
+						repl = 1;
+						ch = KEY_RESIZE;
+						//_nc_update_screensize(sp);
+					}
+					else if (!strcmp(buffer, "C")) {
+						repl = 1;
+						ch = KEY_RIGHT;
+					}
+					else if (!strcmp(buffer, "D")) {
+						repl = 1;
+						ch = KEY_LEFT;
+					}
+					else if (!strcmp(buffer, "A")) {
+						repl = 1;
+						ch = KEY_UP;
+					}
+					else if (!strcmp(buffer, "B")) {
+						repl = 1;
+						ch = KEY_DOWN;
+					}
+					else if (!strcmp(buffer, "0~")) {
+						repl = 1;
+						ch = KEY_F(1);
+					}
+					else if (!strcmp(buffer, "1~")) {
+						repl = 1;
+						ch = KEY_F(2);
+					}
+					else if (!strcmp(buffer, "2~")) {
+						repl = 1;
+						ch = KEY_F(3);
+					}
+					else if (!strcmp(buffer, "3~")) {
+						repl = 1;
+						ch = KEY_F(4);
+					}
+					else if (!strcmp(buffer, "4~")) {
+						repl = 1;
+						ch = KEY_F(5);
+					}
+					else if (!strcmp(buffer, "5~")) {
+						repl = 1;
+						ch = KEY_F(6);
+					}
+					else if (!strcmp(buffer, "6~")) {
+						repl = 1;
+						ch = KEY_F(7);
+					}
+					else if (!strcmp(buffer, "7~")) {
+						repl = 1;
+						ch = KEY_F(8);
+					}
+					else if (!strcmp(buffer, "8~")) {
+						repl = 1;
+						ch = KEY_F(9);
+					}
+					else if (!strcmp(buffer, "9~")) {
+						repl = 1;
+						ch = KEY_F(10);
+					}
+					else if (!strcmp(buffer, "20~")) {
+						repl = 1;
+						ch = KEY_F(11);
+					}
+					else if (!strcmp(buffer, "21~")) {
+						repl = 1;
+						ch = KEY_F(12);
+					}
+					else if (!strcmp(buffer, "41~")) {
+						repl = 1;
+						ch = KEY_PPAGE;
+					}
+					else if (!strcmp(buffer, "42~")) {
+						repl = 1;
+						ch = KEY_NPAGE;
+					}
+					else if (!strcmp(buffer, "43~")) {
+						repl = 1;
+						ch = KEY_BREAK;
+					}
+					else if (!strcmp(buffer, "44~")) {
+						repl = 1;
+						ch = KEY_HOME;
+					}
+					else if (!strcmp(buffer, "45~")) {
+						repl = 1;
+						ch = KEY_END;
+					}
+					else {
+						FILE *f1 = fopen("t:unbound_key.txt", "a");
+						fprintf(f1, "buffer=%s ch=%d\n", buffer, ch);
+						fclose(f1);
+					}
 				}
 				else {
-					FILE *f1 = fopen("t:unbound_key.txt", "a");
-					fprintf(f1, "buffer=%s ch=%d\n", buffer, ch);
-					fclose(f1);
+					if (c2 == 257) {
+						repl = 1;
+						ch = KEY_BREAK;
+						raise(SIGTERM);
+					}
+					else if (c2 == 3) {
+						raise(SIGINT);
+					}
 				}
 			}
 		#endif
@@ -499,8 +525,10 @@ fifo_push(SCREEN *sp EVENTLIST_2nd(_nc_eventlist *evl))
 #if USE_PTHREADS_EINTR
 		_nc_globals.read_thread = 0;
 #endif
+#ifdef __amigaos4__	
 		if (repl == 0)
 			ch = c2;
+#endif
 #endif /* USE_TERM_DRIVER */
 	}
 
@@ -875,7 +903,7 @@ wgetch(WINDOW *win)
 					  &value,
 					  _nc_use_meta(win)
 						  EVENTLIST_2nd((_nc_eventlist *)0));
-//printf("wgetch %d %d\n", code, value);						  
+
 	if (code != ERR)
 		code = value;
 	returnCode(code);
